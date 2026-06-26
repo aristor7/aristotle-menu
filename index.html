@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -560,20 +560,100 @@
       box-shadow: 0 4px 16px rgba(160,82,45,0.22);
     }
 
+    /* ── RECEIPT MODAL (order) ──────────────── */
+    #orderModal .modal-overlay { align-items: flex-end; }
+
+    .receipt {
+      background: #FEFCF8;
+      border-radius: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 430px;
+      animation: slideUp 0.3s cubic-bezier(0.34,1.1,0.64,1);
+      position: relative;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* jagged tear edge at top */
+    .receipt-tear {
+      width: 100%;
+      height: 18px;
+      background:
+        radial-gradient(circle at 8px -4px, transparent 10px, #FEFCF8 10px) -4px 0 / 16px 18px,
+        radial-gradient(circle at 8px -4px, transparent 10px, #FEFCF8 10px) 4px 0 / 16px 18px;
+      background-color: transparent;
+      flex-shrink: 0;
+    }
+
+    .receipt-body {
+      padding: 4px 24px 28px;
+    }
+
+    .receipt-header {
+      text-align: center;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #C8B89A;
+      margin-bottom: 12px;
+    }
+
+    .receipt-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #2C1F14;
+      letter-spacing: 0.04em;
+    }
+
+    .receipt-address {
+      font-size: 10px;
+      color: #9C8878;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    .receipt-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #9C8878;
+      margin-bottom: 14px;
+      letter-spacing: 0.03em;
+    }
+
+    .receipt-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #6B5040;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #D4C4AE;
+      margin-bottom: 4px;
+      gap: 10px;
+    }
+    .receipt-col-header .col-name { flex: 1; }
+    .receipt-col-header .col-qty  { width: 60px; text-align: center; }
+    .receipt-col-header .col-amt  { width: 72px; text-align: right; }
+
     .order-row {
       display: flex;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
+      padding: 7px 0;
+      border-bottom: 1px dashed rgba(160,130,100,0.2);
       gap: 10px;
+      font-family: 'Courier New', Courier, monospace;
     }
     .order-row:last-of-type { border-bottom: none; }
 
     .order-row-name {
       flex: 1;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      color: #2C1F14;
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -581,80 +661,133 @@
     }
 
     .order-row-price {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--text-2);
-      min-width: 72px;
+      color: #2C1F14;
+      width: 72px;
       text-align: right;
+      flex-shrink: 0;
     }
 
     .stepper {
       display: flex;
       align-items: center;
       gap: 0;
-      border: 1px solid var(--border-2);
-      border-radius: 7px;
+      border: 1px solid #D4C4AE;
+      border-radius: 4px;
       overflow: hidden;
       flex-shrink: 0;
+      width: 60px;
     }
 
     .stepper-btn {
-      background: var(--surface-2);
-      color: var(--rust);
+      background: #F5EDE2;
+      color: #A0522D;
       border: none;
-      font-size: 16px;
-      font-weight: 400;
-      width: 28px;
-      height: 28px;
+      font-size: 14px;
+      font-weight: 600;
+      width: 20px;
+      height: 24px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.12s;
       line-height: 1;
+      font-family: monospace;
     }
-    .stepper-btn:hover { background: var(--border-2); }
+    .stepper-btn:hover { background: #E8DECE; }
 
     .stepper-qty {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      min-width: 24px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #2C1F14;
+      flex: 1;
       text-align: center;
-      background: var(--surface);
+      background: #FEFCF8;
+      font-family: 'Courier New', monospace;
     }
 
-    .order-total-row {
+    .receipt-divider {
+      border: none;
+      border-top: 1px dashed #C8B89A;
+      margin: 10px 0;
+    }
+
+    .receipt-subtotal-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 14px 0 0;
+      font-size: 11px;
+      color: #9C8878;
+      padding: 2px 0;
+      font-family: 'Courier New', monospace;
+    }
+
+    .receipt-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0 4px;
+      border-top: 2px solid #2C1F14;
       margin-top: 4px;
-      border-top: 1.5px solid var(--border-2);
     }
 
-    .order-total-label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+    .receipt-total-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2C1F14;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-3);
     }
 
-    .order-total-amount {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--text);
+    .receipt-total-amount {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2C1F14;
       letter-spacing: -0.01em;
     }
 
-    .order-total-amount span {
-      font-size: 12px;
+    .receipt-total-amount span {
+      font-size: 11px;
       font-weight: 400;
-      color: var(--text-3);
+      color: #9C8878;
       margin-left: 3px;
+    }
+
+    .receipt-thankyou {
+      text-align: center;
+      font-size: 10px;
+      color: #B8A890;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #C8B89A;
+    }
+
+    .receipt-close-btn {
+      background: linear-gradient(135deg, #B86848 0%, #8B4428 100%);
+      color: #FDF8F2;
+      border: none;
       font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      letter-spacing: 0.03em;
+      margin-top: 18px;
+      box-shadow: 0 4px 16px rgba(160,82,45,0.22);
+    }
+
+    .receipt-empty {
+      text-align: center;
+      font-size: 12px;
+      color: #B8A890;
+      padding: 20px 0 10px;
+      letter-spacing: 0.04em;
+      font-family: 'Courier New', monospace;
     }
 
     #orderList { margin-bottom: 0; }
@@ -920,19 +1053,36 @@
   </div>
 
   <div class="modal-overlay" id="orderModal" onclick="closeModal('orderModal')">
-    <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-handle"></div>
-      <div class="modal-eyebrow" data-key="table_sub">Table 7 · Tashkent</div>
-      <div class="modal-title" data-key="order_title">Your Order</div>
-      <div id="orderList" class="modal-desc"></div>
-      <div id="orderTotal" style="display:none">
-        <div class="order-total-row">
-          <span class="order-total-label" data-key="total_label">Total</span>
-          <span class="order-total-amount"><span id="totalAmount">0</span> <span>UZS</span></span>
+    <div class="receipt" onclick="event.stopPropagation()">
+      <!-- torn edge -->
+      <div class="receipt-tear"></div>
+      <div class="receipt-body">
+        <!-- header -->
+        <div class="receipt-header">
+          <div class="receipt-logo">Aristotle Café</div>
+          <div class="receipt-address" data-key="table_sub">Table 7 · Tashkent</div>
+          <div class="receipt-address" id="receiptDateTime"></div>
         </div>
+        <!-- col headers -->
+        <div class="receipt-col-header">
+          <span class="col-name">Item</span>
+          <span class="col-qty">Qty</span>
+          <span class="col-amt">Amount</span>
+        </div>
+        <!-- items -->
+        <div id="orderList"></div>
+        <!-- totals -->
+        <div id="orderTotal" style="display:none">
+          <hr class="receipt-divider">
+          <div class="receipt-total-row">
+            <span class="receipt-total-label" data-key="total_label">Total</span>
+            <span class="receipt-total-amount"><span id="totalAmount">0</span> <span>UZS</span></span>
+          </div>
+        </div>
+        <!-- thank you -->
+        <div class="receipt-thankyou">*** Thank you for dining with us ***</div>
+        <button class="receipt-close-btn" onclick="closeModal('orderModal')" data-key="btn_close">Close</button>
       </div>
-      <div style="height:16px"></div>
-      <button class="modal-close" onclick="closeModal('orderModal')" data-key="btn_close">Close</button>
     </div>
   </div>
 
@@ -1173,4 +1323,5 @@
   </script>
 </body>
 </html>
+
 
