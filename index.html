@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -13,22 +13,17 @@
       --bg-deep:     #EAE0D3;
       --surface:     #FDFAF6;
       --surface-2:   #F5EDE2;
-
       --border:      rgba(160,130,100,0.15);
       --border-2:    rgba(160,130,100,0.28);
-
       --rust:        #A0522D;
       --rust-lt:     #B8734A;
       --rust-pale:   #C49070;
       --rust-glow:   rgba(160,82,45,0.12);
-
       --gold:        #8B6914;
       --gold-lt:     #B38A30;
-
       --text:        #2C1F14;
       --text-2:      #6B5040;
       --text-3:      #A08870;
-
       --green:       #5A7A52;
     }
 
@@ -48,7 +43,7 @@
     /* ── HEADER ─────────────────────────────── */
     .header {
       background: linear-gradient(180deg, #2C1F14 0%, #3A2818 100%);
-      padding: 36px 22px 18px;
+      padding: 14px 22px 14px;
       position: sticky;
       top: 0;
       z-index: 100;
@@ -57,33 +52,14 @@
 
     .header-top {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
-      background: linear-gradient(135deg, #C49070 0%, #8B5030 100%);
-      display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    .logo-letter {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: #FDF8F2;
-      line-height: 1;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
 
     .restaurant-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 600;
       color: #F5EDE2;
       line-height: 1;
@@ -125,6 +101,40 @@
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50%       { opacity: 0.35; }
+    }
+
+    /* ── LANGUAGE SWITCHER ──────────────────── */
+    .lang-switcher {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 6px;
+      justify-content: flex-end;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(200,170,140,0.45);
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+
+    .lang-btn.active {
+      background: rgba(196,144,112,0.18);
+      border-color: rgba(196,144,112,0.45);
+      color: #C49070;
+    }
+
+    .lang-btn:not(.active):hover {
+      border-color: rgba(196,144,112,0.3);
+      color: rgba(200,170,140,0.7);
     }
 
     /* ── CATEGORY NAV ───────────────────────── */
@@ -204,27 +214,20 @@
       transform: translateY(-1px);
     }
 
-    .featured-img img,
-.small-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.small-card-img {
-  overflow: hidden;
-}
-
-.featured-img {
-  overflow: hidden;
+    /* FIX: removed ::after overlay that caused the white blur */
+    .featured-img {
+      width: 100%;
+      height: 152px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #E8DECE 0%, #D9CCBA 50%, #CBB89E 100%);
     }
 
-    .featured-img::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, var(--surface) 100%);
+    .featured-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .img-label {
@@ -233,6 +236,10 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-3);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .featured-body { padding: 12px 16px 18px; }
@@ -325,6 +332,14 @@
       background: linear-gradient(135deg, #E8DECE 0%, #D4C4AE 100%);
       flex-shrink: 0;
       border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .small-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .small-card-body { flex: 1; min-width: 0; }
@@ -396,9 +411,9 @@
       background: linear-gradient(180deg, rgba(242,235,224,0.88) 0%, #F2EBE0 100%);
       backdrop-filter: blur(20px);
       border-top: 1px solid var(--border-2);
-      padding: 12px 16px 28px;
+      padding: 8px 14px 16px;
       display: flex;
-      gap: 8px;
+      gap: 7px;
       z-index: 200;
     }
 
@@ -408,14 +423,15 @@
       color: var(--text-2);
       border: 1px solid var(--border-2);
       font-family: 'Inter', sans-serif;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      padding: 11px 8px;
-      border-radius: 11px;
+      padding: 7px 6px;
+      border-radius: 9px;
       cursor: pointer;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
+      justify-content: center;
       gap: 5px;
       transition: all 0.18s;
       letter-spacing: 0.04em;
@@ -431,7 +447,7 @@
       color: #FDF8F2;
       border-color: transparent;
       flex: 1.5;
-      box-shadow: 0 4px 16px rgba(160,82,45,0.22);
+      box-shadow: 0 3px 12px rgba(160,82,45,0.22);
     }
     .action-btn.primary:hover {
       opacity: 0.9;
@@ -439,13 +455,14 @@
     }
 
     .btn-icon {
-      width: 17px;
-      height: 17px;
+      width: 14px;
+      height: 14px;
       stroke: currentColor;
       fill: none;
       stroke-width: 1.8;
       stroke-linecap: round;
       stroke-linejoin: round;
+      flex-shrink: 0;
     }
 
     /* ── TOAST ──────────────────────────────── */
@@ -545,53 +562,102 @@
 
     .order-row {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 10px 0;
       border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      color: var(--text);
+      gap: 10px;
     }
     .order-row:last-of-type { border-bottom: none; }
-    .order-qty {
-      font-size: 12px;
-      color: var(--rust);
-      font-weight: 600;
+
+    .order-row-name {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    /* ── LANGUAGE SWITCHER ──────────────────── */
-    .lang-switcher {
+    .order-row-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-2);
+      min-width: 72px;
+      text-align: right;
+    }
+
+    .stepper {
       display: flex;
-      gap: 5px;
-      margin-bottom: 10px;
-      justify-content: flex-end;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--border-2);
+      border-radius: 7px;
+      overflow: hidden;
+      flex-shrink: 0;
     }
 
-    .lang-btn {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(200,170,140,0.45);
-      font-family: 'Inter', sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      padding: 3px 8px;
-      border-radius: 5px;
+    .stepper-btn {
+      background: var(--surface-2);
+      color: var(--rust);
+      border: none;
+      font-size: 16px;
+      font-weight: 400;
+      width: 28px;
+      height: 28px;
       cursor: pointer;
-      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s;
+      line-height: 1;
+    }
+    .stepper-btn:hover { background: var(--border-2); }
+
+    .stepper-qty {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 24px;
+      text-align: center;
+      background: var(--surface);
+    }
+
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 0;
+      margin-top: 4px;
+      border-top: 1.5px solid var(--border-2);
+    }
+
+    .order-total-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: var(--text-3);
     }
 
-    .lang-btn.active {
-      background: rgba(196,144,112,0.18);
-      border-color: rgba(196,144,112,0.45);
-      color: #C49070;
+    .order-total-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
     }
 
-    .lang-btn:not(.active):hover {
-      border-color: rgba(196,144,112,0.3);
-      color: rgba(200,170,140,0.7);
+    .order-total-amount span {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-3);
+      margin-left: 3px;
+      font-family: 'Inter', sans-serif;
     }
+
+    #orderList { margin-bottom: 0; }
   </style>
 </head>
 <body>
@@ -599,9 +665,8 @@
   <header class="header">
     <div class="header-top">
       <div>
-        <div class="logo-mark"><span class="logo-letter">A</span></div>
         <div class="restaurant-name">Aristotle Café</div>
-        <div class="restaurant-sub">Table 7 · Tashkent</div>
+        <div class="restaurant-sub" data-key="table_sub">Table 7 · Tashkent</div>
       </div>
       <div>
         <div class="lang-switcher">
@@ -632,9 +697,7 @@
 
       <div class="featured-card">
         <div class="featured-img">
-<img loading="lazy"
-src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
-alt="Tandoor Lamb Ribs">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800" alt="Tandoor Lamb Ribs">
         </div>
         <div class="featured-body">
           <div class="item-tag" data-key="tag_special">Today's Special</div>
@@ -649,10 +712,8 @@ alt="Tandoor Lamb Ribs">
 
       <div class="featured-card">
         <div class="featured-img">
-<img loading="lazy"
-src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
-alt="Tandoor Lamb Ribs">
-</div>
+          <img loading="lazy" src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=800" alt="Osh Palov">
+        </div>
         <div class="featured-body">
           <div class="item-tag" data-key="tag_popular">Most Ordered</div>
           <div class="item-name" data-key="item_palov_name">Osh Palov</div>
@@ -668,17 +729,15 @@ alt="Tandoor Lamb Ribs">
     <div class="divider"></div>
 
     <section class="section" id="sec-mains">
-      <div class="section-label">Mains</div>
+      <div class="section-label" data-key="cat_mains">Mains</div>
 
       <div class="small-card">
         <div class="small-card-img">
-<img loading="lazy"
-src="https://picsum.photos/200?random=1"
-alt="">
-</div>
+          <img loading="lazy" src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=200" alt="Shashlik">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Shashlik Plate</div>
-          <div class="small-item-desc">Beef & chicken skewers, grilled peppers</div>
+          <div class="small-item-name" data-key="item_shashlik_name">Shashlik Plate</div>
+          <div class="small-item-desc" data-key="item_shashlik_desc">Beef & chicken skewers, grilled peppers</div>
           <div class="small-item-price">55,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Shashlik Plate')">+</button>
@@ -686,33 +745,35 @@ alt="">
 
       <div class="small-card">
         <div class="small-card-img">
-<img loading="lazy"
-src="https://picsum.photos/200?random=1"
-alt="">
-</div>
+          <img loading="lazy" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200" alt="Lagman">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Lagman Soup</div>
-          <div class="small-item-desc">Hand-pulled noodles, lamb broth, herbs</div>
+          <div class="small-item-name" data-key="item_lagman_name">Lagman Soup</div>
+          <div class="small-item-desc" data-key="item_lagman_desc">Hand-pulled noodles, lamb broth, herbs</div>
           <div class="small-item-price">38,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Lagman Soup')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=200" alt="Samsa">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Samsa (×3)</div>
-          <div class="small-item-desc">Baked pastry, spiced lamb & onion filling</div>
+          <div class="small-item-name" data-key="item_samsa_name">Samsa (×3)</div>
+          <div class="small-item-desc" data-key="item_samsa_desc">Baked pastry, spiced lamb & onion filling</div>
           <div class="small-item-price">22,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Samsa')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=200" alt="Dimlama">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Dimlama</div>
-          <div class="small-item-desc">Slow-braised vegetables & lamb, seasonal</div>
+          <div class="small-item-name" data-key="item_dimlama_name">Dimlama</div>
+          <div class="small-item-desc" data-key="item_dimlama_desc">Slow-braised vegetables & lamb, seasonal</div>
           <div class="small-item-price">48,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Dimlama')">+</button>
@@ -722,43 +783,51 @@ alt="">
     <div class="divider"></div>
 
     <section class="section" id="sec-drinks">
-      <div class="section-label">Drinks</div>
+      <div class="section-label" data-key="cat_drinks">Drinks</div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=200" alt="Black Tea">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Qora Choy</div>
-          <div class="small-item-desc">Black tea, served with nishallo</div>
+          <div class="small-item-name" data-key="item_blacktea_name">Qora Choy</div>
+          <div class="small-item-desc" data-key="item_blacktea_desc">Black tea, served with nishallo</div>
           <div class="small-item-price">8,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Qora Choy')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200" alt="Green Tea">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Kok Choy</div>
-          <div class="small-item-desc">Green tea, Samarkand blend</div>
+          <div class="small-item-name" data-key="item_greentea_name">Kok Choy</div>
+          <div class="small-item-desc" data-key="item_greentea_desc">Green tea, Samarkand blend</div>
           <div class="small-item-price">8,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Kok Choy')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200" alt="Ayran">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Ayran</div>
-          <div class="small-item-desc">Chilled salted yogurt drink, homemade</div>
+          <div class="small-item-name" data-key="item_ayran_name">Ayran</div>
+          <div class="small-item-desc" data-key="item_ayran_desc">Chilled salted yogurt drink, homemade</div>
           <div class="small-item-price">12,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Ayran')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1497534446932-c925b458314e?w=200" alt="Kompot">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Kompot</div>
-          <div class="small-item-desc">Dried apricot & rose hip, chilled</div>
+          <div class="small-item-name" data-key="item_kompot_name">Kompot</div>
+          <div class="small-item-desc" data-key="item_kompot_desc">Dried apricot & rose hip, chilled</div>
           <div class="small-item-price">10,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Kompot')">+</button>
@@ -768,33 +837,39 @@ alt="">
     <div class="divider"></div>
 
     <section class="section" id="sec-desserts">
-      <div class="section-label">Desserts</div>
+      <div class="section-label" data-key="cat_desserts">Desserts</div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1567206563114-c179706e0f04?w=200" alt="Halva">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Halva & Bread</div>
-          <div class="small-item-desc">Sesame halva, fresh non flatbread</div>
+          <div class="small-item-name" data-key="item_halva_name">Halva & Bread</div>
+          <div class="small-item-desc" data-key="item_halva_desc">Sesame halva, fresh non flatbread</div>
           <div class="small-item-price">15,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Halva & Bread')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1562440499-64c9a111f713?w=200" alt="Chak-Chak">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Chak-Chak</div>
-          <div class="small-item-desc">Fried dough with honey glaze</div>
+          <div class="small-item-name" data-key="item_chakchak_name">Chak-Chak</div>
+          <div class="small-item-desc" data-key="item_chakchak_desc">Fried dough with honey glaze</div>
           <div class="small-item-price">18,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Chak-Chak')">+</button>
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=200" alt="Fruit Plate">
+        </div>
         <div class="small-card-body">
-          <div class="small-item-name">Fruit Plate</div>
-          <div class="small-item-desc">Seasonal melon, grapes, apricot</div>
+          <div class="small-item-name" data-key="item_fruit_name">Fruit Plate</div>
+          <div class="small-item-desc" data-key="item_fruit_desc">Seasonal melon, grapes, apricot</div>
           <div class="small-item-price">25,000 UZS</div>
         </div>
         <button class="small-add-btn" onclick="addItem('Fruit Plate')">+</button>
@@ -812,7 +887,7 @@ alt="">
         <line x1="10" y1="1" x2="10" y2="4"/>
         <line x1="14" y1="1" x2="14" y2="4"/>
       </svg>
-      Waiter
+      <span data-key="btn_waiter">Waiter</span>
     </button>
     <button class="action-btn primary" onclick="openOrderModal()">
       <svg class="btn-icon" viewBox="0 0 24 24">
@@ -821,14 +896,14 @@ alt="">
         <line x1="9" y1="12" x2="15" y2="12"/>
         <line x1="9" y1="16" x2="12" y2="16"/>
       </svg>
-      Order (<span id="cartCount">0</span>)
+      <span data-key="btn_order">Order</span> (<span id="cartCount">0</span>)
     </button>
     <button class="action-btn" onclick="openCheckModal()">
       <svg class="btn-icon" viewBox="0 0 24 24">
         <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
         <line x1="1" y1="10" x2="23" y2="10"/>
       </svg>
-      Pay
+      <span data-key="btn_pay">Pay</span>
     </button>
   </div>
 
@@ -837,53 +912,234 @@ alt="">
   <div class="modal-overlay" id="waiterModal" onclick="closeModal('waiterModal')">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
-      <div class="modal-eyebrow">Staff notified</div>
-      <div class="modal-title">Waiter on the way</div>
-      <div class="modal-desc">Your request has been sent. Someone will be at your table shortly.</div>
-      <button class="modal-close" onclick="closeModal('waiterModal')">Dismiss</button>
+      <div class="modal-eyebrow" data-key="waiter_eyebrow">Staff notified</div>
+      <div class="modal-title" data-key="waiter_title">Waiter on the way</div>
+      <div class="modal-desc" data-key="waiter_desc">Your request has been sent. Someone will be at your table shortly.</div>
+      <button class="modal-close" onclick="closeModal('waiterModal')" data-key="btn_dismiss">Dismiss</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="orderModal" onclick="closeModal('orderModal')">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
-      <div class="modal-eyebrow">Table 7</div>
-      <div class="modal-title">Your Order</div>
-      <div id="orderList" class="modal-desc">Nothing added yet. Tap + on any item to add it.</div>
-      <button class="modal-close" onclick="closeModal('orderModal')">Close</button>
+      <div class="modal-eyebrow" data-key="table_sub">Table 7 · Tashkent</div>
+      <div class="modal-title" data-key="order_title">Your Order</div>
+      <div id="orderList" class="modal-desc"></div>
+      <div id="orderTotal" style="display:none">
+        <div class="order-total-row">
+          <span class="order-total-label" data-key="total_label">Total</span>
+          <span class="order-total-amount"><span id="totalAmount">0</span> <span>UZS</span></span>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+      <button class="modal-close" onclick="closeModal('orderModal')" data-key="btn_close">Close</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="checkModal" onclick="closeModal('checkModal')">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
-      <div class="modal-eyebrow">Payment</div>
-      <div class="modal-title">Bill requested</div>
-      <div class="modal-desc">Your bill is being prepared. Staff will bring it to your table shortly.</div>
-      <button class="modal-close" onclick="closeModal('checkModal')">Dismiss</button>
+      <div class="modal-eyebrow" data-key="pay_eyebrow">Payment</div>
+      <div class="modal-title" data-key="pay_title">Bill requested</div>
+      <div class="modal-desc" data-key="pay_desc">Your bill is being prepared. Staff will bring it to your table shortly.</div>
+      <button class="modal-close" onclick="closeModal('checkModal')" data-key="btn_dismiss">Dismiss</button>
     </div>
   </div>
 
   <script>
+    /* ── TRANSLATIONS ─────────────────────── */
+    const T = {
+      en: {
+        status: 'Open', table_sub: 'Table 7 · Tashkent',
+        cat_all: 'All', cat_specials: "Chef's Picks", cat_mains: 'Mains', cat_drinks: 'Drinks', cat_desserts: 'Desserts',
+        tag_special: "Today's Special", tag_popular: 'Most Ordered', add_btn: 'Add to order',
+        item_lamb_name: 'Tandoor Lamb Ribs', item_lamb_desc: 'Slow-roasted over charcoal, served with sumac onions and fresh flatbread.',
+        item_palov_name: 'Osh Palov', item_palov_desc: 'Classic Uzbek plov with saffron rice, carrots, and tender lamb. Feeds two.',
+        item_shashlik_name: 'Shashlik Plate', item_shashlik_desc: 'Beef & chicken skewers, grilled peppers',
+        item_lagman_name: 'Lagman Soup', item_lagman_desc: 'Hand-pulled noodles, lamb broth, herbs',
+        item_samsa_name: 'Samsa (×3)', item_samsa_desc: 'Baked pastry, spiced lamb & onion filling',
+        item_dimlama_name: 'Dimlama', item_dimlama_desc: 'Slow-braised vegetables & lamb, seasonal',
+        item_blacktea_name: 'Qora Choy', item_blacktea_desc: 'Black tea, served with nishallo',
+        item_greentea_name: 'Kok Choy', item_greentea_desc: 'Green tea, Samarkand blend',
+        item_ayran_name: 'Ayran', item_ayran_desc: 'Chilled salted yogurt drink, homemade',
+        item_kompot_name: 'Kompot', item_kompot_desc: 'Dried apricot & rose hip, chilled',
+        item_halva_name: 'Halva & Bread', item_halva_desc: 'Sesame halva, fresh non flatbread',
+        item_chakchak_name: 'Chak-Chak', item_chakchak_desc: 'Fried dough with honey glaze',
+        item_fruit_name: 'Fruit Plate', item_fruit_desc: 'Seasonal melon, grapes, apricot',
+        btn_waiter: 'Waiter', btn_order: 'Order', btn_pay: 'Pay',
+        btn_dismiss: 'Dismiss', btn_close: 'Close',
+        waiter_eyebrow: 'Staff notified', waiter_title: 'Waiter on the way',
+        waiter_desc: 'Your request has been sent. Someone will be at your table shortly.',
+        order_title: 'Your Order', order_empty: 'Nothing added yet. Tap + on any item to add it.',
+        pay_eyebrow: 'Payment', pay_title: 'Bill requested',
+        pay_desc: 'Your bill is being prepared. Staff will bring it to your table shortly.',
+        total_label: 'Total', toast_added: 'added',
+      },
+      tr: {
+        status: 'Açık', table_sub: 'Masa 7 · Taşkent',
+        cat_all: 'Tümü', cat_specials: 'Şefin Seçimleri', cat_mains: 'Ana Yemekler', cat_drinks: 'İçecekler', cat_desserts: 'Tatlılar',
+        tag_special: 'Günün Önerisi', tag_popular: 'En Çok Sipariş', add_btn: 'Siparişe ekle',
+        item_lamb_name: 'Tandır Kuzu Kaburga', item_lamb_desc: 'Mangal ateşinde yavaş pişirilmiş, sumak soğanı ve taze ekmek ile servis edilir.',
+        item_palov_name: 'Öz Palov', item_palov_desc: 'Safran pilavı, havuç ve kuzu etiyle klasik Özbek plovı. İki kişilik.',
+        item_shashlik_name: 'Şiş Tabağı', item_shashlik_desc: 'Dana ve tavuk şiş, közlenmiş biber',
+        item_lagman_name: 'Lagman Çorbası', item_lagman_desc: 'El yapımı erişte, kuzu suyu, otlar',
+        item_samsa_name: 'Samsa (×3)', item_samsa_desc: 'Fırında börek, baharatlı kuzu ve soğan dolgusu',
+        item_dimlama_name: 'Dimlama', item_dimlama_desc: 'Yavaş pişirilmiş sebze ve kuzu, mevsimlik',
+        item_blacktea_name: 'Kara Çay', item_blacktea_desc: 'Siyah çay, nişallo ile servis edilir',
+        item_greentea_name: 'Yeşil Çay', item_greentea_desc: 'Yeşil çay, Semerkant harmanı',
+        item_ayran_name: 'Ayran', item_ayran_desc: 'Soğuk tuzlu yoğurt içeceği, ev yapımı',
+        item_kompot_name: 'Komposto', item_kompot_desc: 'Kuru kayısı ve kuşburnu, soğuk',
+        item_halva_name: 'Helva & Ekmek', item_halva_desc: 'Susam helvası, taze non ekmeği',
+        item_chakchak_name: 'Çak-Çak', item_chakchak_desc: 'Ballı soslu kızarmış hamur',
+        item_fruit_name: 'Meyve Tabağı', item_fruit_desc: 'Mevsim kavunu, üzüm, kayısı',
+        btn_waiter: 'Garson', btn_order: 'Sipariş', btn_pay: 'Ödeme',
+        btn_dismiss: 'Tamam', btn_close: 'Kapat',
+        waiter_eyebrow: 'Personel bildirildi', waiter_title: 'Garson geliyor',
+        waiter_desc: 'Talebiniz iletildi. Kısa süre içinde masanıza gelinecek.',
+        order_title: 'Siparişiniz', order_empty: 'Henüz eklenmedi. Eklemek için + tuşuna basın.',
+        pay_eyebrow: 'Ödeme', pay_title: 'Hesap istendi',
+        pay_desc: 'Hesabınız hazırlanıyor. Personel kısa süre içinde masanıza getirecek.',
+        total_label: 'Toplam', toast_added: 'eklendi',
+      },
+      ru: {
+        status: 'Открыто', table_sub: 'Стол 7 · Ташкент',
+        cat_all: 'Всё', cat_specials: 'От шефа', cat_mains: 'Основные', cat_drinks: 'Напитки', cat_desserts: 'Десерты',
+        tag_special: 'Блюдо дня', tag_popular: 'Популярное', add_btn: 'Добавить',
+        item_lamb_name: 'Рёбра ягнёнка в тандыре', item_lamb_desc: 'Медленно запечённые на углях, подаются с луком сумах и свежей лепёшкой.',
+        item_palov_name: 'Ош Плов', item_palov_desc: 'Классический узбекский плов с рисом, морковью и нежной бараниной. На двоих.',
+        item_shashlik_name: 'Шашлык', item_shashlik_desc: 'Говядина и курица на шампурах, жареный перец',
+        item_lagman_name: 'Лагман', item_lagman_desc: 'Тянутая лапша, бульон из баранины, зелень',
+        item_samsa_name: 'Самса (×3)', item_samsa_desc: 'Печёная самса с бараниной и луком',
+        item_dimlama_name: 'Димлама', item_dimlama_desc: 'Тушёные овощи с бараниной, сезонное',
+        item_blacktea_name: 'Чёрный чай', item_blacktea_desc: 'Чёрный чай, подаётся с нишалло',
+        item_greentea_name: 'Зелёный чай', item_greentea_desc: 'Зелёный чай, самаркандский купаж',
+        item_ayran_name: 'Айран', item_ayran_desc: 'Холодный солёный напиток из йогурта, домашний',
+        item_kompot_name: 'Компот', item_kompot_desc: 'Из кураги и шиповника, охлаждённый',
+        item_halva_name: 'Халва с лепёшкой', item_halva_desc: 'Кунжутная халва, свежий нон',
+        item_chakchak_name: 'Чак-Чак', item_chakchak_desc: 'Жареное тесто с мёдом',
+        item_fruit_name: 'Фруктовая тарелка', item_fruit_desc: 'Сезонная дыня, виноград, абрикос',
+        btn_waiter: 'Официант', btn_order: 'Заказ', btn_pay: 'Счёт',
+        btn_dismiss: 'Закрыть', btn_close: 'Закрыть',
+        waiter_eyebrow: 'Персонал уведомлён', waiter_title: 'Официант идёт',
+        waiter_desc: 'Ваш запрос отправлен. Скоро подойдут к вашему столику.',
+        order_title: 'Ваш заказ', order_empty: 'Ничего не добавлено. Нажмите + рядом с блюдом.',
+        pay_eyebrow: 'Оплата', pay_title: 'Счёт запрошен',
+        pay_desc: 'Счёт готовится. Персонал скоро принесёт его к вашему столику.',
+        total_label: 'Итого', toast_added: 'добавлено',
+      },
+      uz: {
+        status: 'Ochiq', table_sub: '7-stol · Toshkent',
+        cat_all: 'Barchasi', cat_specials: 'Oshpaz tavsiyasi', cat_mains: 'Asosiy taomlar', cat_drinks: 'Ichimliklar', cat_desserts: 'Shirinliklar',
+        tag_special: 'Kunlik taom', tag_popular: "Eng ko'p buyurtma", add_btn: "Buyurtmaga qo'sh",
+        item_lamb_name: "Tandir qo'zi qovurg'asi", item_lamb_desc: "Ko'mirda sekin pishirilgan, sumak piyoz va yangi non bilan beriladi.",
+        item_palov_name: 'Osh palov', item_palov_desc: "Zarg'aldoq guruch, sabzi va qo'zi go'shti bilan klassik o'zbek palovi. Ikki kishilik.",
+        item_shashlik_name: 'Shashlik', item_shashlik_desc: 'Mol va tovuq kabob, qovurilgan qalampir',
+        item_lagman_name: "Lag'mon", item_lagman_desc: "Qo'lda tortilgan makaron, qo'zi sho'rvasi, ko'katlar",
+        item_samsa_name: 'Samsa (×3)', item_samsa_desc: "Tandirda pishirilgan samsa, qo'zi va piyoz",
+        item_dimlama_name: 'Dimlama', item_dimlama_desc: "Qo'zi bilan dim qilingan sabzavotlar, mavsumiy",
+        item_blacktea_name: 'Qora choy', item_blacktea_desc: 'Qora choy, nishallo bilan',
+        item_greentea_name: "Ko'k choy", item_greentea_desc: "Ko'k choy, Samarqand aralashmasi",
+        item_ayran_name: 'Ayron', item_ayran_desc: "Sovuq sho'r qatiq ichimlik, uy tayyori",
+        item_kompot_name: 'Kompot', item_kompot_desc: "Quritilgan o'rik va namatak, sovuq",
+        item_halva_name: 'Halva va non', item_halva_desc: 'Kungaboqar halvasi, yangi non',
+        item_chakchak_name: 'Chak-chak', item_chakchak_desc: 'Asal bilan qovurilgan xamir',
+        item_fruit_name: 'Meva tarelkasi', item_fruit_desc: "Mavsumiy qovun, uzum, o'rik",
+        btn_waiter: 'Ofitsiant', btn_order: 'Buyurtma', btn_pay: "To'lov",
+        btn_dismiss: 'Yopish', btn_close: 'Yopish',
+        waiter_eyebrow: 'Xodim xabardor qilindi', waiter_title: 'Ofitsiant kelmoqda',
+        waiter_desc: "So'rovingiz yuborildi. Tez orada stolingizga kelishadi.",
+        order_title: 'Buyurtmangiz', order_empty: "Hali hech narsa qo'shilmagan. Qo'shish uchun + tugmasini bosing.",
+        pay_eyebrow: "To'lov", pay_title: 'Hisob so\'raldi',
+        pay_desc: "Hisobingiz tayyorlanmoqda. Xodim tez orada stolingizga olib keladi.",
+        total_label: 'Jami', toast_added: "qo'shildi",
+      }
+    };
+
+    /* ── ITEM PRICES (UZS) ────────────────── */
+    const PRICES = {
+      'Tandoor Lamb Ribs': 85000,
+      'Osh Palov':         65000,
+      'Shashlik Plate':    55000,
+      'Lagman Soup':       38000,
+      'Samsa':             22000,
+      'Dimlama':           48000,
+      'Qora Choy':          8000,
+      'Kok Choy':           8000,
+      'Ayran':             12000,
+      'Kompot':            10000,
+      'Halva & Bread':     15000,
+      'Chak-Chak':         18000,
+      'Fruit Plate':       25000,
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang, btn) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const t = T[lang];
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      updateCart();
+    }
+
+    /* ── CART ─────────────────────────────── */
     const cart = {};
 
     function addItem(name) {
       cart[name] = (cart[name] || 0) + 1;
       updateCart();
-      showToast(name + ' added');
+      showToast(name + ' ' + T[currentLang].toast_added);
+    }
+
+    function changeQty(name, delta) {
+      cart[name] = (cart[name] || 0) + delta;
+      if (cart[name] <= 0) delete cart[name];
+      updateCart();
+    }
+
+    function fmt(n) {
+      return n.toLocaleString('en-US').replace(/,/g, ',');
     }
 
     function updateCart() {
       const total = Object.values(cart).reduce((a, b) => a + b, 0);
       document.getElementById('cartCount').textContent = total;
-      const listEl = document.getElementById('orderList');
+
+      const listEl  = document.getElementById('orderList');
+      const totalEl = document.getElementById('orderTotal');
+      const amtEl   = document.getElementById('totalAmount');
+
       if (!Object.keys(cart).length) {
-        listEl.innerHTML = 'Nothing added yet. Tap + on any item to add it.';
+        listEl.textContent = T[currentLang].order_empty;
+        listEl.style.marginBottom = '0';
+        totalEl.style.display = 'none';
         return;
       }
-      listEl.innerHTML = Object.entries(cart).map(([k, v]) =>
-        `<div class="order-row"><span>${k}</span><span class="order-qty">×${v}</span></div>`
-      ).join('');
+
+      let grandTotal = 0;
+      listEl.innerHTML = Object.entries(cart).map(([name, qty]) => {
+        const unit  = PRICES[name] || 0;
+        const line  = unit * qty;
+        grandTotal += line;
+        return `
+          <div class="order-row">
+            <span class="order-row-name">${name}</span>
+            <div class="stepper">
+              <button class="stepper-btn" onclick="changeQty('${name}', -1)">−</button>
+              <span class="stepper-qty">${qty}</span>
+              <button class="stepper-btn" onclick="changeQty('${name}', 1)">+</button>
+            </div>
+            <span class="order-row-price">${fmt(line)}</span>
+          </div>`;
+      }).join('');
+
+      amtEl.textContent = fmt(grandTotal) + ' UZS';
+      totalEl.style.display = 'block';
+      listEl.style.marginBottom = '0';
     }
 
     function showToast(msg) {
@@ -912,6 +1168,9 @@ alt="">
         document.querySelectorAll('.divider').forEach(d => d.style.display = 'none');
       }
     }
+
+    updateCart();
   </script>
 </body>
 </html>
+
