@@ -572,6 +572,8 @@
       animation: slideUp 0.3s cubic-bezier(0.34,1.1,0.64,1);
       position: relative;
       font-family: 'Courier New', Courier, monospace;
+      max-height: 88vh;
+      overflow-y: auto;
     }
 
     /* jagged tear edge at top */
@@ -583,6 +585,8 @@
         radial-gradient(circle at 8px -4px, transparent 10px, #FEFCF8 10px) 4px 0 / 16px 18px;
       background-color: transparent;
       flex-shrink: 0;
+      position: sticky;
+      top: 0;
     }
 
     .receipt-body {
@@ -639,26 +643,63 @@
     .receipt-col-header .col-qty  { width: 60px; text-align: center; }
     .receipt-col-header .col-amt  { width: 72px; text-align: right; }
 
+    /* group wrapper so the row + its note panel stay together */
+    .order-group {
+      border-bottom: 1px dashed rgba(160,130,100,0.2);
+    }
+    .order-group:last-of-type { border-bottom: none; }
+
     .order-row {
       display: flex;
       align-items: center;
       padding: 7px 0;
-      border-bottom: 1px dashed rgba(160,130,100,0.2);
       gap: 10px;
       font-family: 'Courier New', Courier, monospace;
     }
-    .order-row:last-of-type { border-bottom: none; }
+
+    .order-row-name-wrap {
+      flex: 1;
+      min-width: 0;
+    }
 
     .order-row-name {
-      flex: 1;
       font-size: 12px;
       font-weight: 600;
       color: #2C1F14;
-      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
+    .note-toggle {
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 2px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10px;
+      color: #B8916F;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      letter-spacing: 0.03em;
+      transition: color 0.15s;
+    }
+    .note-toggle:hover { color: #A0522D; }
+    .note-toggle .pencil {
+      width: 10px;
+      height: 10px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: transform 0.15s;
+    }
+    .note-toggle.has-note { color: #8B6914; }
+    .note-toggle.has-note .pencil { transform: rotate(0deg); }
 
     .order-row-price {
       font-size: 12px;
@@ -706,6 +747,76 @@
       text-align: center;
       background: #FEFCF8;
       font-family: 'Courier New', monospace;
+    }
+
+    /* ── NOTE PANEL ── animated reveal, stays in receipt vibe ── */
+    .note-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin-top 0.32s ease;
+      opacity: 0;
+      margin-top: 0;
+    }
+    .note-panel.open {
+      max-height: 120px;
+      opacity: 1;
+      margin-top: 2px;
+    }
+
+    .note-panel-inner {
+      padding: 8px 10px 10px;
+      margin-bottom: 8px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 17px,
+          rgba(160,130,100,0.16) 17px,
+          rgba(160,130,100,0.16) 18px
+        ),
+        #FBF6EC;
+      border: 1px dashed #D4BE9C;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .note-panel-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #B8916F;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .note-panel-label .pin {
+      width: 8px;
+      height: 8px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .note-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      line-height: 18px;
+      color: #4A3520;
+      min-height: 36px;
+      padding: 0;
+    }
+    .note-textarea::placeholder {
+      color: #C0A988;
+      font-style: italic;
     }
 
     .receipt-divider {
@@ -1124,6 +1235,7 @@
         pay_eyebrow: 'Payment', pay_title: 'Bill requested',
         pay_desc: 'Your bill is being prepared. Staff will bring it to your table shortly.',
         total_label: 'Total', toast_added: 'added',
+        note_add: 'add note', note_edit: 'note', note_placeholder: 'e.g. no pineapple, allergic…',
       },
       tr: {
         status: 'Açık', table_sub: 'Masa 7 · Taşkent',
@@ -1150,6 +1262,7 @@
         pay_eyebrow: 'Ödeme', pay_title: 'Hesap istendi',
         pay_desc: 'Hesabınız hazırlanıyor. Personel kısa süre içinde masanıza getirecek.',
         total_label: 'Toplam', toast_added: 'eklendi',
+        note_add: 'not ekle', note_edit: 'not', note_placeholder: 'örn. ananas yok, alerjim var…',
       },
       ru: {
         status: 'Открыто', table_sub: 'Стол 7 · Ташкент',
@@ -1176,6 +1289,7 @@
         pay_eyebrow: 'Оплата', pay_title: 'Счёт запрошен',
         pay_desc: 'Счёт готовится. Персонал скоро принесёт его к вашему столику.',
         total_label: 'Итого', toast_added: 'добавлено',
+        note_add: 'добавить заметку', note_edit: 'заметка', note_placeholder: 'напр. без ананаса, аллергия…',
       },
       uz: {
         status: 'Ochiq', table_sub: '7-stol · Toshkent',
@@ -1202,6 +1316,7 @@
         pay_eyebrow: "To'lov", pay_title: 'Hisob so\'raldi',
         pay_desc: "Hisobingiz tayyorlanmoqda. Xodim tez orada stolingizga olib keladi.",
         total_label: 'Jami', toast_added: "qo'shildi",
+        note_add: 'izoh qo\'sh', note_edit: 'izoh', note_placeholder: "masalan: ananasiz, allergiya bor…",
       }
     };
 
@@ -1237,18 +1352,57 @@
     }
 
     /* ── CART ─────────────────────────────── */
+    // cart[name] = { qty, note }
     const cart = {};
+    // tracks which note panels are currently expanded, by item name
+    const openNotes = new Set();
 
     function addItem(name) {
-      cart[name] = (cart[name] || 0) + 1;
+      if (!cart[name]) cart[name] = { qty: 0, note: '' };
+      cart[name].qty += 1;
       updateCart();
       showToast(name + ' ' + T[currentLang].toast_added);
     }
 
     function changeQty(name, delta) {
-      cart[name] = (cart[name] || 0) + delta;
-      if (cart[name] <= 0) delete cart[name];
+      if (!cart[name]) return;
+      cart[name].qty += delta;
+      if (cart[name].qty <= 0) {
+        delete cart[name];
+        openNotes.delete(name);
+      }
       updateCart();
+    }
+
+    function toggleNote(name) {
+      if (openNotes.has(name)) {
+        openNotes.delete(name);
+      } else {
+        openNotes.add(name);
+      }
+      updateCart();
+      if (openNotes.has(name)) {
+        // focus the textarea once it's rendered & animating open
+        requestAnimationFrame(() => {
+          const ta = document.getElementById('note-ta-' + cssSafe(name));
+          if (ta) ta.focus();
+        });
+      }
+    }
+
+    function updateNote(name, value) {
+      if (cart[name]) cart[name].note = value;
+      // update the toggle label/state without a full re-render so the textarea doesn't lose focus
+      const toggle = document.getElementById('note-toggle-' + cssSafe(name));
+      if (toggle) {
+        const hasNote = value.trim().length > 0;
+        toggle.classList.toggle('has-note', hasNote);
+        toggle.querySelector('.note-toggle-text').textContent = hasNote ? (value.trim().length > 22 ? value.trim().slice(0, 22) + '…' : value.trim()) : T[currentLang].note_add;
+      }
+    }
+
+    function cssSafe(name) {
+      return name.replace(/[^a-zA-Z0-9]/g, '_');
     }
 
     function fmt(n) {
@@ -1256,7 +1410,7 @@
     }
 
     function updateCart() {
-      const total = Object.values(cart).reduce((a, b) => a + b, 0);
+      const total = Object.values(cart).reduce((a, b) => a + b.qty, 0);
       document.getElementById('cartCount').textContent = total;
 
       const listEl  = document.getElementById('orderList');
@@ -1271,25 +1425,87 @@
       }
 
       let grandTotal = 0;
-      listEl.innerHTML = Object.entries(cart).map(([name, qty]) => {
+      listEl.innerHTML = Object.entries(cart).map(([name, data]) => {
+        const { qty, note } = data;
         const unit  = PRICES[name] || 0;
         const line  = unit * qty;
         grandTotal += line;
+        const safe = cssSafe(name);
+        const isOpen = openNotes.has(name);
+        const hasNote = note && note.trim().length > 0;
+        const toggleLabel = hasNote
+          ? (note.trim().length > 22 ? note.trim().slice(0, 22) + '…' : note.trim())
+          : T[currentLang].note_add;
+
         return `
-          <div class="order-row">
-            <span class="order-row-name">${name}</span>
-            <div class="stepper">
-              <button class="stepper-btn" onclick="changeQty('${name}', -1)">−</button>
-              <span class="stepper-qty">${qty}</span>
-              <button class="stepper-btn" onclick="changeQty('${name}', 1)">+</button>
+          <div class="order-group">
+            <div class="order-row">
+              <div class="order-row-name-wrap">
+                <div class="order-row-name">${escapeHtml(name)}</div>
+                <button type="button" class="note-toggle${hasNote ? ' has-note' : ''}" id="note-toggle-${safe}" onclick="toggleNote('${escapeJs(name)}')">
+                  <svg class="pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+                  <span class="note-toggle-text">${escapeHtml(toggleLabel)}</span>
+                </button>
+              </div>
+              <div class="stepper">
+                <button class="stepper-btn" onclick="changeQty('${escapeJs(name)}', -1)">−</button>
+                <span class="stepper-qty">${qty}</span>
+                <button class="stepper-btn" onclick="changeQty('${escapeJs(name)}', 1)">+</button>
+              </div>
+              <span class="order-row-price">${fmt(line)}</span>
             </div>
-            <span class="order-row-price">${fmt(line)}</span>
+            <div class="note-panel${isOpen ? ' open' : ''}" id="note-panel-${safe}">
+              <div class="note-panel-inner">
+                <div class="note-panel-label">
+                  <svg class="pin" viewBox="0 0 24 24"><path d="M12 2 L12 14 M6 6 L18 6"/><circle cx="12" cy="17" r="3"/></svg>
+                  ${escapeHtml(T[currentLang].note_edit)}
+                </div>
+                <textarea
+                  class="note-textarea"
+                  id="note-ta-${safe}"
+                  rows="2"
+                  placeholder="${escapeHtml(T[currentLang].note_placeholder)}"
+                  oninput="updateNote('${escapeJs(name)}', this.value); autoGrow(this);"
+                >${escapeHtml(note || '')}</textarea>
+              </div>
+            </div>
           </div>`;
       }).join('');
+
+      // auto-grow any open textareas to fit existing content
+      Object.keys(cart).forEach(name => {
+        if (openNotes.has(name)) {
+          const ta = document.getElementById('note-ta-' + cssSafe(name));
+          if (ta) autoGrow(ta);
+        }
+      });
 
       amtEl.textContent = fmt(grandTotal) + ' UZS';
       totalEl.style.display = 'block';
       listEl.style.marginBottom = '0';
+    }
+
+    function autoGrow(textarea) {
+      const panel = textarea.closest('.note-panel');
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+      if (panel && panel.classList.contains('open')) {
+        // give the panel enough room for the grown textarea + label/padding
+        const needed = textarea.scrollHeight + 40;
+        panel.style.maxHeight = Math.max(120, needed) + 'px';
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeJs(str) {
+      return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     }
 
     function showToast(msg) {
@@ -1323,6 +1539,7 @@
   </script>
 </body>
 </html>
+
 
 
 
