@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Aristotle Café — Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #F2EBE0;
+      --bg-deep:     #EAE0D3;
+      --surface:     #FDFAF6;
+      --surface-2:   #F5EDE2;
+
+      --border:      rgba(160,130,100,0.15);
+      --border-2:    rgba(160,130,100,0.28);
+
+      --rust:        #A0522D;
+      --rust-lt:     #B8734A;
+      --rust-pale:   #C49070;
+      --rust-glow:   rgba(160,82,45,0.12);
+
+      --gold:        #8B6914;
+      --gold-lt:     #B38A30;
+
+      --text:        #2C1F14;
+      --text-2:      #6B5040;
+      --text-3:      #A08870;
+
+      --green:       #5A7A52;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      max-width: 430px;
+      margin: 0 auto;
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .header {
+      background: linear-gradient(180deg, #2C1F14 0%, #3A2818 100%);
+      padding: 36px 22px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #C49070 0%, #8B5030 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .logo-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #FDF8F2;
+      line-height: 1;
+    }
+
+    .restaurant-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 600;
+      color: #F5EDE2;
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+
+    .restaurant-sub {
+      font-size: 11px;
+      color: rgba(200,170,140,0.55);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(90,122,82,0.15);
+      color: #7FAF74;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(90,122,82,0.25);
+      margin-top: 4px;
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #7FAF74;
+      animation: pulse 2.4s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    /* ── CATEGORY NAV ───────────────────────── */
+    .cat-nav {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cat-nav::-webkit-scrollbar { display: none; }
+
+    .cat-btn {
+      flex-shrink: 0;
+      background: transparent;
+      border: 1px solid rgba(200,170,140,0.25);
+      color: rgba(200,170,140,0.5);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+      letter-spacing: 0.03em;
+    }
+
+    .cat-btn.active {
+      background: linear-gradient(135deg, #C49070 0%, #8B5030 100%);
+      border-color: transparent;
+      color: #FDF8F2;
+      font-weight: 600;
+    }
+
+    .cat-btn:not(.active):hover {
+      border-color: rgba(196,144,112,0.6);
+      color: #C49070;
+    }
+
+    /* ── MAIN CONTENT ───────────────────────── */
+    .content { padding: 0 0 110px; }
+
+    /* ── SECTION ────────────────────────────── */
+    .section { padding: 28px 20px 0; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rust-pale);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-2), transparent);
+    }
+
+    /* ── FEATURED CARD ───────────────────────── */
+    .featured-card {
+      background: var(--surface);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+      box-shadow: 0 2px 16px rgba(100,60,20,0.06);
+    }
+    .featured-card:hover {
+      border-color: var(--border-2);
+      transform: translateY(-1px);
+    }
+
+    .featured-img {
+      width: 100%;
+      height: 152px;
+      background: linear-gradient(135deg, #E8DECE 0%, #D9CCBA 50%, #CBB89E 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .featured-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, var(--surface) 100%);
+    }
+
+    .img-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    .featured-body { padding: 12px 16px 18px; }
+
+    .item-tag {
+      display: inline-block;
+      background: var(--rust-glow);
+      color: var(--rust);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      border: 1px solid rgba(160,82,45,0.18);
+      margin-bottom: 8px;
+    }
+
+    .item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 5px;
+      line-height: 1.15;
+    }
+
+    .item-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .item-price {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .item-price span {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-3);
+      margin-left: 3px;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, #B86848 0%, #8B4428 100%);
+      color: #FDF8F2;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+      letter-spacing: 0.02em;
+      box-shadow: 0 3px 12px rgba(160,82,45,0.2);
+    }
+    .add-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── SMALL CARD ─────────────────────────── */
+    .small-card {
+      background: var(--surface);
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 14px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+      transition: border-color 0.18s;
+      box-shadow: 0 1px 6px rgba(100,60,20,0.04);
+    }
+    .small-card:hover { border-color: var(--border-2); }
+
+    .small-card-img {
+      width: 58px;
+      height: 58px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #E8DECE 0%, #D4C4AE 100%);
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .small-card-body { flex: 1; min-width: 0; }
+
+    .small-item-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .small-item-desc {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .small-item-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+
+    .small-add-btn {
+      background: var(--surface-2);
+      color: var(--rust);
+      border: 1px solid rgba(160,82,45,0.22);
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .small-add-btn:hover {
+      background: linear-gradient(135deg, #B86848 0%, #8B4428 100%);
+      color: #FDF8F2;
+      border-color: transparent;
+      box-shadow: 0 3px 10px rgba(160,82,45,0.2);
+    }
+
+    /* ── DIVIDER ────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-2), transparent);
+      margin: 28px 20px 0;
+    }
+
+    /* ── BOTTOM BAR ─────────────────────────── */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: linear-gradient(180deg, rgba(242,235,224,0.88) 0%, #F2EBE0 100%);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border-2);
+      padding: 12px 16px 28px;
+      display: flex;
+      gap: 8px;
+      z-index: 200;
+    }
+
+    .action-btn {
+      flex: 1;
+      background: var(--surface);
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 11px 8px;
+      border-radius: 11px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.18s;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .action-btn:hover {
+      border-color: var(--rust-lt);
+      color: var(--rust);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, #B86848 0%, #8B4428 100%);
+      color: #FDF8F2;
+      border-color: transparent;
+      flex: 1.5;
+      box-shadow: 0 4px 16px rgba(160,82,45,0.22);
+    }
+    .action-btn.primary:hover {
+      opacity: 0.9;
+      color: #FDF8F2;
+    }
+
+    .btn-icon {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── TOAST ──────────────────────────────── */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-70px);
+      background: #3A2818;
+      color: #C49070;
+      border: 1px solid rgba(196,144,112,0.25);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: 8px;
+      z-index: 999;
+      transition: transform 0.28s cubic-bezier(0.34,1.4,0.64,1);
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── MODAL ──────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(44,31,20,0.5);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border-2);
+      border-radius: 20px 20px 0 0;
+      padding: 24px 24px 40px;
+      width: 100%;
+      max-width: 430px;
+      animation: slideUp 0.28s cubic-bezier(0.34,1.2,0.64,1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+
+    .modal-handle {
+      width: 36px;
+      height: 3px;
+      background: var(--border-2);
+      border-radius: 3px;
+      margin: 0 auto 24px;
+    }
+
+    .modal-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rust-pale);
+      margin-bottom: 6px;
+    }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .modal-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .modal-close {
+      background: linear-gradient(135deg, #B86848 0%, #8B4428 100%);
+      color: #FDF8F2;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px;
+      border-radius: 11px;
+      cursor: pointer;
+      width: 100%;
+      letter-spacing: 0.03em;
+      box-shadow: 0 4px 16px rgba(160,82,45,0.22);
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+    }
+    .order-row:last-of-type { border-bottom: none; }
+    .order-qty {
+      font-size: 12px;
+      color: var(--rust);
+      font-weight: 600;
+    }
+
+    /* ── LANGUAGE SWITCHER ──────────────────── */
+    .lang-switcher {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+      justify-content: flex-end;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(200,170,140,0.45);
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+
+    .lang-btn.active {
+      background: rgba(196,144,112,0.18);
+      border-color: rgba(196,144,112,0.45);
+      color: #C49070;
+    }
+
+    .lang-btn:not(.active):hover {
+      border-color: rgba(196,144,112,0.3);
+      color: rgba(200,170,140,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-top">
+      <div>
+        <div class="logo-mark"><span class="logo-letter">A</span></div>
+        <div class="restaurant-name">Aristotle Café</div>
+        <div class="restaurant-sub">Table 7 · Tashkent</div>
+      </div>
+      <div>
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('en', this)">EN</button>
+          <button class="lang-btn" onclick="setLang('tr', this)">TR</button>
+          <button class="lang-btn" onclick="setLang('ru', this)">RU</button>
+          <button class="lang-btn" onclick="setLang('uz', this)">UZ</button>
+        </div>
+        <div class="status-badge">
+          <div class="status-dot"></div>
+          <span data-key="status">Open</span>
+        </div>
+      </div>
+    </div>
+    <nav class="cat-nav">
+      <button class="cat-btn active" onclick="filterCat(this,'all')" data-key="cat_all">All</button>
+      <button class="cat-btn" onclick="filterCat(this,'specials')" data-key="cat_specials">Chef's Picks</button>
+      <button class="cat-btn" onclick="filterCat(this,'mains')" data-key="cat_mains">Mains</button>
+      <button class="cat-btn" onclick="filterCat(this,'drinks')" data-key="cat_drinks">Drinks</button>
+      <button class="cat-btn" onclick="filterCat(this,'desserts')" data-key="cat_desserts">Desserts</button>
+    </nav>
+  </header>
+
+  <main class="content">
+
+    <section class="section" id="sec-specials">
+      <div class="section-label" data-key="cat_specials">Chef's Picks</div>
+
+      <div class="featured-card">
+        <div class="featured-img"><span class="img-label">Photo</span></div>
+        <div class="featured-body">
+          <div class="item-tag" data-key="tag_special">Today's Special</div>
+          <div class="item-name" data-key="item_lamb_name">Tandoor Lamb Ribs</div>
+          <div class="item-desc" data-key="item_lamb_desc">Slow-roasted over charcoal, served with sumac onions and fresh flatbread.</div>
+          <div class="item-footer">
+            <div class="item-price">85,000 <span>UZS</span></div>
+            <button class="add-btn" onclick="addItem('Tandoor Lamb Ribs')" data-key="add_btn">Add to order</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-card">
+        <div class="featured-img"><span class="img-label">Photo</span></div>
+        <div class="featured-body">
+          <div class="item-tag" data-key="tag_popular">Most Ordered</div>
+          <div class="item-name" data-key="item_palov_name">Osh Palov</div>
+          <div class="item-desc" data-key="item_palov_desc">Classic Uzbek plov with saffron rice, carrots, and tender lamb. Feeds two.</div>
+          <div class="item-footer">
+            <div class="item-price">65,000 <span>UZS</span></div>
+            <button class="add-btn" onclick="addItem('Osh Palov')" data-key="add_btn">Add to order</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="sec-mains">
+      <div class="section-label">Mains</div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Shashlik Plate</div>
+          <div class="small-item-desc">Beef & chicken skewers, grilled peppers</div>
+          <div class="small-item-price">55,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Shashlik Plate')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Lagman Soup</div>
+          <div class="small-item-desc">Hand-pulled noodles, lamb broth, herbs</div>
+          <div class="small-item-price">38,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Lagman Soup')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Samsa (×3)</div>
+          <div class="small-item-desc">Baked pastry, spiced lamb & onion filling</div>
+          <div class="small-item-price">22,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Samsa')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Dimlama</div>
+          <div class="small-item-desc">Slow-braised vegetables & lamb, seasonal</div>
+          <div class="small-item-price">48,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Dimlama')">+</button>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="sec-drinks">
+      <div class="section-label">Drinks</div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Qora Choy</div>
+          <div class="small-item-desc">Black tea, served with nishallo</div>
+          <div class="small-item-price">8,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Qora Choy')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Kok Choy</div>
+          <div class="small-item-desc">Green tea, Samarkand blend</div>
+          <div class="small-item-price">8,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Kok Choy')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Ayran</div>
+          <div class="small-item-desc">Chilled salted yogurt drink, homemade</div>
+          <div class="small-item-price">12,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Ayran')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Kompot</div>
+          <div class="small-item-desc">Dried apricot & rose hip, chilled</div>
+          <div class="small-item-price">10,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Kompot')">+</button>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="sec-desserts">
+      <div class="section-label">Desserts</div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Halva & Bread</div>
+          <div class="small-item-desc">Sesame halva, fresh non flatbread</div>
+          <div class="small-item-price">15,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Halva & Bread')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Chak-Chak</div>
+          <div class="small-item-desc">Fried dough with honey glaze</div>
+          <div class="small-item-price">18,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Chak-Chak')">+</button>
+      </div>
+
+      <div class="small-card">
+        <div class="small-card-img"></div>
+        <div class="small-card-body">
+          <div class="small-item-name">Fruit Plate</div>
+          <div class="small-item-desc">Seasonal melon, grapes, apricot</div>
+          <div class="small-item-price">25,000 UZS</div>
+        </div>
+        <button class="small-add-btn" onclick="addItem('Fruit Plate')">+</button>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="bottom-bar">
+    <button class="action-btn" onclick="callWaiter()">
+      <svg class="btn-icon" viewBox="0 0 24 24">
+        <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+        <line x1="6" y1="1" x2="6" y2="4"/>
+        <line x1="10" y1="1" x2="10" y2="4"/>
+        <line x1="14" y1="1" x2="14" y2="4"/>
+      </svg>
+      Waiter
+    </button>
+    <button class="action-btn primary" onclick="openOrderModal()">
+      <svg class="btn-icon" viewBox="0 0 24 24">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+        <rect x="9" y="3" width="6" height="4" rx="1"/>
+        <line x1="9" y1="12" x2="15" y2="12"/>
+        <line x1="9" y1="16" x2="12" y2="16"/>
+      </svg>
+      Order (<span id="cartCount">0</span>)
+    </button>
+    <button class="action-btn" onclick="openCheckModal()">
+      <svg class="btn-icon" viewBox="0 0 24 24">
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+        <line x1="1" y1="10" x2="23" y2="10"/>
+      </svg>
+      Pay
+    </button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-overlay" id="waiterModal" onclick="closeModal('waiterModal')">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-eyebrow">Staff notified</div>
+      <div class="modal-title">Waiter on the way</div>
+      <div class="modal-desc">Your request has been sent. Someone will be at your table shortly.</div>
+      <button class="modal-close" onclick="closeModal('waiterModal')">Dismiss</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="orderModal" onclick="closeModal('orderModal')">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-eyebrow">Table 7</div>
+      <div class="modal-title">Your Order</div>
+      <div id="orderList" class="modal-desc">Nothing added yet. Tap + on any item to add it.</div>
+      <button class="modal-close" onclick="closeModal('orderModal')">Close</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="checkModal" onclick="closeModal('checkModal')">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-eyebrow">Payment</div>
+      <div class="modal-title">Bill requested</div>
+      <div class="modal-desc">Your bill is being prepared. Staff will bring it to your table shortly.</div>
+      <button class="modal-close" onclick="closeModal('checkModal')">Dismiss</button>
+    </div>
+  </div>
+
+  <script>
+    const cart = {};
+
+    function addItem(name) {
+      cart[name] = (cart[name] || 0) + 1;
+      updateCart();
+      showToast(name + ' added');
+    }
+
+    function updateCart() {
+      const total = Object.values(cart).reduce((a, b) => a + b, 0);
+      document.getElementById('cartCount').textContent = total;
+      const listEl = document.getElementById('orderList');
+      if (!Object.keys(cart).length) {
+        listEl.innerHTML = 'Nothing added yet. Tap + on any item to add it.';
+        return;
+      }
+      listEl.innerHTML = Object.entries(cart).map(([k, v]) =>
+        `<div class="order-row"><span>${k}</span><span class="order-qty">×${v}</span></div>`
+      ).join('');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 1600);
+    }
+
+    function callWaiter()     { openModal('waiterModal'); }
+    function openOrderModal() { openModal('orderModal');  }
+    function openCheckModal() { openModal('checkModal');  }
+    function openModal(id)    { document.getElementById(id).classList.add('open');    }
+    function closeModal(id)   { document.getElementById(id).classList.remove('open'); }
+
+    function filterCat(btn, cat) {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const sections = { specials:'sec-specials', mains:'sec-mains', drinks:'sec-drinks', desserts:'sec-desserts' };
+      document.querySelectorAll('.section, .divider').forEach(el => el.style.display = '');
+      if (cat !== 'all') {
+        Object.entries(sections).forEach(([key, id]) => {
+          const s = document.getElementById(id);
+          if (s) s.style.display = key === cat ? '' : 'none';
+        });
+        document.querySelectorAll('.divider').forEach(d => d.style.display = 'none');
+      }
+    }
+  </script>
+</body>
+</html>
