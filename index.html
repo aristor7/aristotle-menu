@@ -204,14 +204,20 @@
       transform: translateY(-1px);
     }
 
-    .featured-img {
-      width: 100%;
-      height: 152px;
-      background: linear-gradient(135deg, #E8DECE 0%, #D9CCBA 50%, #CBB89E 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+    .featured-img img,
+.small-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.small-card-img {
+  overflow: hidden;
+}
+
+.featured-img {
+  overflow: hidden;
     }
 
     .featured-img::after {
@@ -625,7 +631,11 @@
       <div class="section-label" data-key="cat_specials">Chef's Picks</div>
 
       <div class="featured-card">
-        <div class="featured-img"><span class="img-label">Photo</span></div>
+        <div class="featured-img">
+<img loading="lazy"
+src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
+alt="Tandoor Lamb Ribs">
+        </div>
         <div class="featured-body">
           <div class="item-tag" data-key="tag_special">Today's Special</div>
           <div class="item-name" data-key="item_lamb_name">Tandoor Lamb Ribs</div>
@@ -638,7 +648,11 @@
       </div>
 
       <div class="featured-card">
-        <div class="featured-img"><span class="img-label">Photo</span></div>
+        <div class="featured-img">
+<img loading="lazy"
+src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
+alt="Tandoor Lamb Ribs">
+</div>
         <div class="featured-body">
           <div class="item-tag" data-key="tag_popular">Most Ordered</div>
           <div class="item-name" data-key="item_palov_name">Osh Palov</div>
@@ -657,7 +671,11 @@
       <div class="section-label">Mains</div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+<img loading="lazy"
+src="https://picsum.photos/200?random=1"
+alt="">
+</div>
         <div class="small-card-body">
           <div class="small-item-name">Shashlik Plate</div>
           <div class="small-item-desc">Beef & chicken skewers, grilled peppers</div>
@@ -667,7 +685,11 @@
       </div>
 
       <div class="small-card">
-        <div class="small-card-img"></div>
+        <div class="small-card-img">
+<img loading="lazy"
+src="https://picsum.photos/200?random=1"
+alt="">
+</div>
         <div class="small-card-body">
           <div class="small-item-name">Lagman Soup</div>
           <div class="small-item-desc">Hand-pulled noodles, lamb broth, herbs</div>
