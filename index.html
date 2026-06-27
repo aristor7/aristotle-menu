@@ -21,9 +21,12 @@
       --text:        #2C1F14;
       --text-2:      #6B5040;
       --text-3:      #A08870;
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
     }
 
     html { scroll-behavior: smooth; }
+    html, body { overscroll-behavior-y: none; }
 
     body {
       background: var(--bg);
@@ -34,7 +37,41 @@
       min-height: 100vh;
       max-width: 430px;
       margin: 0 auto;
+      -webkit-tap-highlight-color: transparent;
     }
+
+    /* Respect reduced-motion preference: kill non-essential motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Visible keyboard focus, consistent across interactive elements */
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--rust-pale);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ── PAGE LOAD CHOREOGRAPHY ─────────────── */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroReveal {
+      from { opacity: 0; transform: scale(1.04); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .header        { animation: fadeSlideIn 0.5s var(--ease-out) both; }
+    .hero          { animation: heroReveal 0.7s var(--ease-out) both; }
+    .search-wrap   { animation: fadeSlideIn 0.5s var(--ease-out) 0.08s both; }
+    .icon-cat-strip{ animation: fadeSlideIn 0.5s var(--ease-out) 0.14s both; }
 
     /* ── HEADER ─────────────────────────────── */
     .header {
@@ -44,6 +81,12 @@
       top: 0;
       z-index: 100;
       border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: padding 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+    }
+
+    .header.is-scrolled {
+      padding: 9px 22px 8px;
+      box-shadow: 0 8px 24px rgba(20,12,6,0.28);
     }
 
     .header-top {
@@ -59,7 +102,10 @@
       color: #F5EDE2;
       line-height: 1;
       letter-spacing: 0.01em;
+      transition: font-size 0.3s var(--ease-out);
     }
+
+    .header.is-scrolled .restaurant-name { font-size: 22px; }
 
     .restaurant-sub {
       font-size: 11px;
@@ -67,6 +113,15 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-top: 5px;
+      transition: max-height 0.3s var(--ease-out), opacity 0.2s ease, margin-top 0.3s var(--ease-out);
+      max-height: 14px;
+      overflow: hidden;
+    }
+
+    .header.is-scrolled .restaurant-sub {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
     }
 
     .status-badge {
@@ -131,6 +186,8 @@
       color: rgba(200,170,140,0.7);
     }
 
+    .lang-btn:active { transform: scale(0.92); }
+
     /* ── HERO CAROUSEL ─────────────────────── */
     .hero {
       position: relative;
@@ -161,6 +218,20 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .hero-slide img.loaded { opacity: 1; }
+
+    .hero-slide {
+      background: linear-gradient(110deg, #2C1F14 8%, #3A2818 18%, #2C1F14 33%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s linear infinite;
+    }
+
+    @keyframes shimmer {
+      to { background-position-x: -200%; }
     }
 
     .hero-slide-overlay {
@@ -328,6 +399,17 @@
       object-fit: cover;
     }
 
+    .icon-cat-img-fav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-cat-btn.active .icon-cat-img-fav svg path {
+      fill: var(--rust);
+      stroke: var(--rust);
+    }
+
     .icon-cat-label {
       font-size: 11px;
       font-weight: 500;
@@ -350,12 +432,26 @@
       color: var(--text-3);
       padding: 0 20px 10px;
       display: none;
+      animation: fadeSlideIn 0.3s var(--ease-out) both;
     }
 
     .no-results {
       text-align: center;
       padding: 40px 20px;
       display: none;
+      animation: fadeSlideIn 0.35s var(--ease-out) both;
+    }
+
+    .no-results-icon {
+      width: 40px; height: 40px;
+      margin: 0 auto 14px;
+      opacity: 0.45;
+      stroke: var(--text-3);
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
     }
 
     .no-results-title {
@@ -404,6 +500,11 @@
     }
 
     /* ── MENU CARD ─────────────────────────── */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(14px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .menu-card {
       background: var(--surface);
       border-radius: 16px;
@@ -412,13 +513,25 @@
       box-shadow: 0 1px 6px rgba(100,60,20,0.06);
       display: flex;
       flex-direction: column;
-      transition: transform 0.18s, box-shadow 0.18s;
+      transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out), opacity 0.25s ease;
       position: relative;
+      animation: cardIn 0.45s var(--ease-out) both;
     }
 
     .menu-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 16px rgba(100,60,20,0.10);
+    }
+
+    .menu-card:active { transform: translateY(0) scale(0.985); }
+
+    .card-grid .menu-card:nth-child(1) { animation-delay: 0.02s; }
+    .card-grid .menu-card:nth-child(2) { animation-delay: 0.07s; }
+    .card-grid .menu-card:nth-child(3) { animation-delay: 0.12s; }
+    .card-grid .menu-card:nth-child(4) { animation-delay: 0.17s; }
+
+    .menu-card.filtered-out {
+      display: none !important;
     }
 
     /* Featured cards span full width */
@@ -432,9 +545,24 @@
     .menu-card-img {
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, #E8DECE 0%, #D4C4AE 100%);
+      background: linear-gradient(110deg, #E8DECE 8%, #F0E6D4 18%, #E8DECE 33%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s linear infinite;
       flex-shrink: 0;
     }
+
+    .menu-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.5s var(--ease-out);
+    }
+
+    .menu-card-img img.loaded { opacity: 1; }
+
+    .menu-card:hover .menu-card-img img { transform: scale(1.05); }
 
     /* Grid card: square image */
     .menu-card:not(.featured) .menu-card-img {
@@ -448,13 +576,6 @@
       min-height: 140px;
       aspect-ratio: unset;
       border-radius: 0;
-    }
-
-    .menu-card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
     }
 
     /* Badge top-left of image */
@@ -490,6 +611,14 @@
     }
 
     .menu-card-fav:hover { transform: scale(1.12); }
+    .menu-card-fav:active { transform: scale(0.92); }
+
+    @keyframes heartBurst {
+      0%   { transform: scale(1); }
+      35%  { transform: scale(1.35); }
+      60%  { transform: scale(0.92); }
+      100% { transform: scale(1); }
+    }
 
     .menu-card-fav svg {
       width: 14px; height: 14px;
@@ -499,7 +628,10 @@
       stroke-linecap: round;
       stroke-linejoin: round;
       transition: fill 0.15s, stroke 0.15s;
+      transform-origin: center;
     }
+
+    .menu-card-fav.bursting svg { animation: heartBurst 0.4s var(--ease-spring); }
 
     .menu-card-fav.active svg {
       fill: var(--rust);
@@ -650,6 +782,7 @@
     }
 
     .menu-card-minus:hover { background: rgba(160,82,45,0.12); }
+    .menu-card-minus:active { transform: scaleX(1) scale(0.9); }
 
     .menu-card-add {
       width: 28px; height: 28px;
@@ -670,6 +803,15 @@
     }
 
     .menu-card-add:hover { opacity: 0.85; transform: scale(1.08); }
+    .menu-card-add:active { transform: scale(0.9); }
+
+    @keyframes addPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(0.78); }
+      70%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+    .menu-card-add.popping { animation: addPop 0.38s var(--ease-spring); }
 
     /* ── DIVIDER ───────────────────────────── */
     .divider {
@@ -715,6 +857,7 @@
       text-transform: uppercase;
     }
     .action-btn:hover { border-color: var(--rust-lt); color: var(--rust); }
+    .action-btn:active { transform: scale(0.96); }
 
     .action-btn.primary {
       background: linear-gradient(135deg, #B86848 0%, #8B4428 100%);
@@ -724,6 +867,14 @@
       box-shadow: 0 3px 12px rgba(160,82,45,0.22);
     }
     .action-btn.primary:hover { opacity: 0.9; color: #FDF8F2; }
+    .action-btn.primary:active { transform: scale(0.97); opacity: 0.92; }
+
+    @keyframes cartPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+    #cartCount.pop { display: inline-block; animation: cartPop 0.35s var(--ease-spring); }
 
     .btn-icon {
       width: 14px; height: 14px;
@@ -748,12 +899,24 @@
       padding: 9px 18px;
       border-radius: 8px;
       z-index: 999;
-      transition: transform 0.28s cubic-bezier(0.34,1.4,0.64,1);
+      transition: transform 0.32s var(--ease-spring);
       white-space: nowrap;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast-check {
+      width: 13px; height: 13px;
+      stroke: #7FAF74;
+      fill: none;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
 
     /* ── MODAL ─────────────────────────────── */
     .modal-overlay {
@@ -775,7 +938,16 @@
       padding: 24px 24px 40px;
       width: 100%;
       max-width: 430px;
-      animation: slideUp 0.28s cubic-bezier(0.34,1.2,0.64,1);
+      animation: slideUp 0.32s var(--ease-spring) both;
+      touch-action: none;
+    }
+
+    .modal.dragging { transition: none; }
+    .modal.closing  { animation: slideDown 0.22s var(--ease-out) forwards; }
+
+    @keyframes slideDown {
+      from { transform: translateY(0); }
+      to   { transform: translateY(100%); }
     }
 
     @keyframes slideUp {
@@ -788,6 +960,7 @@
       background: var(--border-2);
       border-radius: 3px;
       margin: 0 auto 24px;
+      cursor: grab;
     }
 
     .modal-eyebrow {
@@ -827,7 +1000,9 @@
       width: 100%;
       letter-spacing: 0.03em;
       box-shadow: 0 4px 16px rgba(160,82,45,0.22);
+      transition: transform 0.15s, opacity 0.15s;
     }
+    .modal-close:active { transform: scale(0.97); opacity: 0.92; }
 
     /* ── RECEIPT MODAL ─────────────────────── */
     .receipt {
@@ -836,12 +1011,16 @@
       padding: 0;
       width: 100%;
       max-width: 430px;
-      animation: slideUp 0.3s cubic-bezier(0.34,1.1,0.64,1);
+      animation: slideUp 0.34s var(--ease-spring) both;
       position: relative;
       font-family: 'Courier New', Courier, monospace;
       max-height: 88vh;
       overflow-y: auto;
+      touch-action: pan-y;
     }
+
+    .receipt.dragging { transition: none; }
+    .receipt.closing  { animation: slideDown 0.22s var(--ease-out) forwards; }
 
     .receipt-tear {
       width: 100%;
@@ -853,6 +1032,8 @@
       flex-shrink: 0;
       position: sticky;
       top: 0;
+      cursor: grab;
+      touch-action: none;
     }
 
     .receipt-body { padding: 4px 24px 28px; }
@@ -977,10 +1158,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.12s;
+      transition: background 0.12s, transform 0.12s;
       font-family: monospace;
     }
     .stepper-btn:hover { background: #E8DECE; }
+    .stepper-btn:active { transform: scale(0.88); }
 
     .stepper-qty {
       font-size: 12px;
@@ -1097,7 +1279,9 @@
       letter-spacing: 0.03em;
       margin-top: 18px;
       box-shadow: 0 4px 16px rgba(160,82,45,0.22);
+      transition: transform 0.15s, opacity 0.15s;
     }
+    .receipt-close-btn:active { transform: scale(0.97); opacity: 0.92; }
 
     #orderList { margin-bottom: 0; }
 
@@ -1228,6 +1412,14 @@
         <img src="https://images.unsplash.com/photo-1562440499-64c9a111f713?w=100" alt="Desserts">
       </div>
       <span class="icon-cat-label" data-key="cat_desserts">Desserts</span>
+    </button>
+    <button class="icon-cat-btn" id="favCatBtn" onclick="iconFilterFavourites(this)">
+      <div class="icon-cat-img icon-cat-img-fav">
+        <svg viewBox="0 0 24 24" width="22" height="22">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="none" stroke="#C49070" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="icon-cat-label" data-key="cat_favourites">Saved</span>
     </button>
   </div>
 
@@ -1601,8 +1793,12 @@
     </section>
 
     <div id="noResults" class="no-results">
-      <div class="no-results-title">Nothing found</div>
-      <div class="no-results-sub">Try a different word or browse categories above.</div>
+      <svg class="no-results-icon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <div class="no-results-title" data-key="no_results_title">Nothing found</div>
+      <div class="no-results-sub" data-key="no_results_sub">Try a different word or browse categories above.</div>
     </div>
 
   </main>
@@ -1695,7 +1891,7 @@
   const T = {
     en: {
       status:'Open', table_sub:'Table 7 · Tashkent',
-      cat_all:'All', cat_specials:"Chef's Picks", cat_mains:'Mains', cat_drinks:'Drinks', cat_desserts:'Desserts',
+      cat_all:'All', cat_specials:"Chef's Picks", cat_mains:'Mains', cat_drinks:'Drinks', cat_desserts:'Desserts', cat_favourites:'Saved items',
       tag_special:"Today's Special", tag_popular:'Most Ordered', add_btn:'Add to order',
       item_lamb_name:'Tandoor Lamb Ribs', item_lamb_desc:'Slow-roasted over charcoal, sumac onions & flatbread.',
       item_palov_name:'Osh Palov', item_palov_desc:'Classic Uzbek plov — saffron rice, carrots & lamb. Feeds two.',
@@ -1720,10 +1916,11 @@
       total_label:'Total', toast_added:'added',
       note_add:'add note', note_edit:'note', note_placeholder:'e.g. no pineapple, allergic…',
       search_placeholder:'Search dishes…', search_results:'Results for',
+      no_results_title:'Nothing found', no_results_sub:'Try a different word or browse categories above.',
     },
     tr: {
       status:'Açık', table_sub:'Masa 7 · Taşkent',
-      cat_all:'Tümü', cat_specials:'Şefin Seçimleri', cat_mains:'Ana Yemekler', cat_drinks:'İçecekler', cat_desserts:'Tatlılar',
+      cat_all:'Tümü', cat_specials:'Şefin Seçimleri', cat_mains:'Ana Yemekler', cat_drinks:'İçecekler', cat_desserts:'Tatlılar', cat_favourites:'Kaydedilenler',
       tag_special:'Günün Önerisi', tag_popular:'En Çok Sipariş', add_btn:'Siparişe ekle',
       item_lamb_name:'Tandır Kuzu Kaburga', item_lamb_desc:'Mangal ateşinde yavaş pişirilmiş, sumak soğanı ve taze ekmek ile.',
       item_palov_name:'Öz Palov', item_palov_desc:'Safran pilavı, havuç ve kuzu etiyle klasik Özbek plovı. İki kişilik.',
@@ -1748,10 +1945,11 @@
       total_label:'Toplam', toast_added:'eklendi',
       note_add:'not ekle', note_edit:'not', note_placeholder:'örn. ananas yok, alerjim var…',
       search_placeholder:'Yemek ara…', search_results:'Sonuçlar',
+      no_results_title:'Sonuç bulunamadı', no_results_sub:'Başka bir kelime deneyin veya yukarıdaki kategorilere göz atın.',
     },
     ru: {
       status:'Открыто', table_sub:'Стол 7 · Ташкент',
-      cat_all:'Всё', cat_specials:'От шефа', cat_mains:'Основные', cat_drinks:'Напитки', cat_desserts:'Десерты',
+      cat_all:'Всё', cat_specials:'От шефа', cat_mains:'Основные', cat_drinks:'Напитки', cat_desserts:'Десерты', cat_favourites:'Избранное',
       tag_special:'Блюдо дня', tag_popular:'Популярное', add_btn:'Добавить',
       item_lamb_name:'Рёбра ягнёнка в тандыре', item_lamb_desc:'Медленно запечённые на углях, с луком сумах и лепёшкой.',
       item_palov_name:'Ош Плов', item_palov_desc:'Классический узбекский плов с рисом, морковью и бараниной. На двоих.',
@@ -1776,10 +1974,11 @@
       total_label:'Итого', toast_added:'добавлено',
       note_add:'добавить заметку', note_edit:'заметка', note_placeholder:'напр. без ананаса, аллергия…',
       search_placeholder:'Поиск блюд…', search_results:'Результаты',
+      no_results_title:'Ничего не найдено', no_results_sub:'Попробуйте другое слово или выберите категорию выше.',
     },
     uz: {
       status:'Ochiq', table_sub:'7-stol · Toshkent',
-      cat_all:'Barchasi', cat_specials:'Oshpaz tavsiyasi', cat_mains:'Asosiy taomlar', cat_drinks:'Ichimliklar', cat_desserts:'Shirinliklar',
+      cat_all:'Barchasi', cat_specials:'Oshpaz tavsiyasi', cat_mains:'Asosiy taomlar', cat_drinks:'Ichimliklar', cat_desserts:'Shirinliklar', cat_favourites:'Saqlangan',
       tag_special:'Kunlik taom', tag_popular:"Eng ko'p buyurtma", add_btn:"Buyurtmaga qo'sh",
       item_lamb_name:"Tandir qo'zi qovurg'asi", item_lamb_desc:"Ko'mirda sekin pishirilgan, sumak piyoz va yangi non bilan.",
       item_palov_name:'Osh palov', item_palov_desc:"Zarg'aldoq guruch, sabzi va qo'zi go'shti bilan klassik o'zbek palovi. Ikki kishilik.",
@@ -1804,6 +2003,7 @@
       total_label:'Jami', toast_added:"qo'shildi",
       note_add:"izoh qo'sh", note_edit:'izoh', note_placeholder:"masalan: ananasiz, allergiya bor…",
       search_placeholder:'Taom qidirish…', search_results:'Natijalar',
+      no_results_title:'Hech narsa topilmadi', no_results_sub:"Boshqa so'z bilan urinib ko'ring yoki yuqoridagi turkumlarga qarang.",
     }
   };
 
@@ -1812,6 +2012,7 @@
   const heroTotal = document.querySelectorAll('.hero-slide').length;
   const heroSlidesEl = document.getElementById('heroSlides');
   const heroDotsEl   = document.getElementById('heroDots');
+  const heroEl       = document.getElementById('hero');
   let heroTimer;
 
   function buildDots() {
@@ -1841,18 +2042,102 @@
   buildDots();
   resetTimer();
 
+  /* swipe support: left/right drag to change slide */
+  (function attachHeroSwipe() {
+    let startX = 0, startY = 0, dragging = false, dx = 0;
+
+    heroEl.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; dragging = true; dx = 0;
+      clearInterval(heroTimer);
+      heroSlidesEl.style.transition = 'none';
+    }, { passive: true });
+
+    heroEl.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const t = e.touches[0];
+      dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (Math.abs(dx) < Math.abs(dy)) return; // vertical scroll wins
+      const pct = (dx / heroEl.clientWidth) * 100;
+      heroSlidesEl.style.transform = `translateX(${-heroIndex * 100 + pct}%)`;
+    }, { passive: true });
+
+    heroEl.addEventListener('touchend', () => {
+      if (!dragging) return;
+      dragging = false;
+      heroSlidesEl.style.transition = '';
+      const threshold = heroEl.clientWidth * 0.18;
+      if (dx > threshold) heroGo(heroIndex - 1);
+      else if (dx < -threshold) heroGo(heroIndex + 1);
+      else heroGo(heroIndex); // snap back
+    });
+  })();
+
+  /* fade hero images in once loaded, swap to a tiny shimmer otherwise */
+  document.querySelectorAll('.hero-slide img').forEach(img => {
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('loaded');
+    } else {
+      img.addEventListener('load', () => img.classList.add('loaded'));
+    }
+  });
+
+  /* fade menu-card images in once loaded */
+  document.querySelectorAll('.menu-card-img img').forEach(img => {
+    if (img.complete && img.naturalWidth > 0) {
+      img.classList.add('loaded');
+    } else {
+      img.addEventListener('load', () => img.classList.add('loaded'));
+    }
+  });
+
+  /* ── HEADER SCROLL STATE ─────────────────── */
+  (function attachHeaderScroll() {
+    const headerEl = document.querySelector('.header');
+    let lastState = false;
+    window.addEventListener('scroll', () => {
+      const shouldShrink = window.scrollY > 28;
+      if (shouldShrink !== lastState) {
+        headerEl.classList.toggle('is-scrolled', shouldShrink);
+        lastState = shouldShrink;
+      }
+    }, { passive: true });
+  })();
+
   /* ── FAVOURITES ──────────────────────────── */
+  const favourites = new Set();
+
   function toggleFav(btn) {
-    btn.classList.toggle('active');
+    const card = btn.closest('[data-item]');
+    const name = card ? card.getAttribute('data-item') : btn.dataset.fallbackName || '';
+    const isFav = favourites.has(name);
+    if (isFav) {
+      favourites.delete(name);
+      btn.classList.remove('active');
+    } else {
+      favourites.add(name);
+      btn.classList.add('active');
+      btn.classList.remove('bursting');
+      requestAnimationFrame(() => {
+        btn.classList.add('bursting');
+        setTimeout(() => btn.classList.remove('bursting'), 420);
+      });
+    }
+    if (activeCategory === 'favourites') applyFilters();
   }
 
   /* ── SEARCH ──────────────────────────────── */
   let searchQuery = '';
+  let searchDebounce;
 
   function handleSearch(val) {
-    searchQuery = val.trim().toLowerCase();
     document.getElementById('searchClear').classList.toggle('visible', val.length > 0);
-    applyFilters();
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      searchQuery = val.trim().toLowerCase();
+      applyFilters();
+    }, 120);
   }
 
   function clearSearch() {
@@ -1861,14 +2146,31 @@
     document.getElementById('searchInput').focus();
   }
 
+  function highlightMatches(text, q) {
+    if (!q) return escapeHtml(text);
+    const escaped = escapeHtml(text);
+    const escapedQ = escapeHtml(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return escaped.replace(new RegExp('(' + escapedQ + ')', 'ig'), '<mark>$1</mark>');
+  }
+
   /* ── CATEGORY FILTER ─────────────────────── */
-  /* BUG FIX: use data-cat attribute on each button so sync is reliable */
   let activeCategory = 'all';
 
   function iconFilterCat(btn, cat) {
     activeCategory = cat;
     document.querySelectorAll('.icon-cat-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    applyFilters();
+  }
+
+  function iconFilterFavourites(btn) {
+    activeCategory = (activeCategory === 'favourites') ? 'all' : 'favourites';
+    document.querySelectorAll('.icon-cat-btn').forEach(b => b.classList.remove('active'));
+    if (activeCategory === 'favourites') {
+      btn.classList.add('active');
+    } else {
+      document.querySelector('.icon-cat-btn[onclick*="\'all\'"]').classList.add('active');
+    }
     applyFilters();
   }
 
@@ -1885,20 +2187,28 @@
 
     allCards.forEach(card => {
       const searchText = (card.getAttribute('data-search') || '').toLowerCase();
+      const itemName   = card.getAttribute('data-item') || '';
       /* category tag is always the LAST space-separated token */
       const tokens     = searchText.split(' ');
       const cardCat    = tokens[tokens.length - 1];
-      const matchesCat = cat === 'all' || cardCat === cat;
+      const matchesCat = cat === 'all' || cardCat === cat || (cat === 'favourites' && favourites.has(itemName));
       const matchesQ   = !q || searchText.includes(q);
       const show       = matchesCat && matchesQ;
 
-      card.style.display = show ? '' : 'none';
+      card.classList.toggle('filtered-out', !show);
       if (show) anyVisible = true;
+
+      /* highlight matched text in the visible name (skip when no query) */
+      const nameEl = card.querySelector('.menu-card-name');
+      if (nameEl) {
+        if (!nameEl.dataset.original) nameEl.dataset.original = nameEl.textContent;
+        nameEl.innerHTML = q ? highlightMatches(nameEl.dataset.original, q) : nameEl.dataset.original;
+      }
     });
 
     /* show / hide section headings based on whether any child card is visible */
     sections.forEach(sec => {
-      const visible = [...sec.querySelectorAll('[data-search]')].some(c => c.style.display !== 'none');
+      const visible = [...sec.querySelectorAll('[data-search]')].some(c => !c.classList.contains('filtered-out'));
       sec.style.display = visible ? '' : 'none';
     });
 
@@ -1914,6 +2224,9 @@
 
     if (q) {
       label.textContent = `${T[currentLang].search_results} "${q}"`;
+      label.style.display = 'block';
+    } else if (cat === 'favourites') {
+      label.textContent = T[currentLang].cat_favourites;
       label.style.display = 'block';
     } else {
       label.style.display = 'none';
@@ -1966,6 +2279,29 @@
     syncCardQty(name);
     updateCart();
     showToast(name + ' ' + T[currentLang].toast_added);
+    bounceCartCount();
+    popAddButton(name);
+    if (navigator.vibrate) navigator.vibrate(8);
+  }
+
+  function popAddButton(name) {
+    const card = document.querySelector(`[data-item="${cssAttrSafe(name)}"]`);
+    const btn = card && card.querySelector('.menu-card-add');
+    if (!btn) return;
+    btn.classList.remove('popping');
+    requestAnimationFrame(() => {
+      btn.classList.add('popping');
+      setTimeout(() => btn.classList.remove('popping'), 400);
+    });
+  }
+
+  function bounceCartCount() {
+    const el = document.getElementById('cartCount');
+    el.classList.remove('pop');
+    requestAnimationFrame(() => {
+      el.classList.add('pop');
+      setTimeout(() => el.classList.remove('pop'), 380);
+    });
   }
 
   function changeQty(name, delta) {
@@ -2093,16 +2429,71 @@
 
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
+    t.innerHTML = `<svg class="toast-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>${escapeHtml(msg)}</span>`;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 1600);
+    clearTimeout(t._hideTimer);
+    t._hideTimer = setTimeout(() => t.classList.remove('show'), 1600);
   }
 
   function callWaiter()     { openModal('waiterModal'); }
   function openOrderModal() { updateCart(); openModal('orderModal'); }
   function openCheckModal() { openModal('checkModal'); }
-  function openModal(id)    { document.getElementById(id).classList.add('open'); }
-  function closeModal(id)   { document.getElementById(id).classList.remove('open'); }
+
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+  }
+
+  function closeModal(id) {
+    const overlay = document.getElementById(id);
+    const panel = overlay.querySelector('.modal, .receipt');
+    if (!panel) { overlay.classList.remove('open'); return; }
+    panel.classList.add('closing');
+    setTimeout(() => {
+      overlay.classList.remove('open');
+      panel.classList.remove('closing', 'dragging');
+      panel.style.transform = '';
+    }, 220);
+  }
+
+  /* close the topmost open modal on Escape */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    const openOverlay = document.querySelector('.modal-overlay.open');
+    if (openOverlay) closeModal(openOverlay.id);
+  });
+
+  /* drag-to-dismiss: works for both the rounded modal sheet and the receipt sheet */
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    const panel = overlay.querySelector('.modal, .receipt');
+    const handle = overlay.querySelector('.modal-handle, .receipt-tear');
+    if (!panel || !handle) return;
+
+    let startY = 0, currentY = 0, dragging = false;
+
+    handle.addEventListener('touchstart', e => {
+      startY = e.touches[0].clientY;
+      currentY = 0;
+      dragging = true;
+      panel.classList.add('dragging');
+    }, { passive: true });
+
+    handle.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      currentY = Math.max(0, e.touches[0].clientY - startY);
+      panel.style.transform = `translateY(${currentY}px)`;
+    }, { passive: true });
+
+    handle.addEventListener('touchend', () => {
+      if (!dragging) return;
+      dragging = false;
+      panel.classList.remove('dragging');
+      if (currentY > 90) {
+        closeModal(overlay.id);
+      } else {
+        panel.style.transform = '';
+      }
+    });
+  });
 
   /* receipt timestamp */
   const now = new Date();
