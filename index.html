@@ -2095,13 +2095,31 @@
   /* ── HEADER SCROLL STATE ─────────────────── */
   (function attachHeaderScroll() {
     const headerEl = document.querySelector('.header');
-    let lastState = false;
-    window.addEventListener('scroll', () => {
-      const shouldShrink = window.scrollY > 28;
-      if (shouldShrink !== lastState) {
-        headerEl.classList.toggle('is-scrolled', shouldShrink);
-        lastState = shouldShrink;
+    let isScrolled = false;
+    let ticking = false;
+
+    /* hysteresis: different thresholds for entering vs exiting the
+       compact state, so the shrink-induced layout shift can't flip
+       scrollY back across a single shared threshold and oscillate */
+    const SHRINK_AT  = 36;
+    const EXPAND_AT  = 12;
+
+    function update() {
+      const y = window.scrollY;
+      if (!isScrolled && y > SHRINK_AT) {
+        isScrolled = true;
+        headerEl.classList.add('is-scrolled');
+      } else if (isScrolled && y < EXPAND_AT) {
+        isScrolled = false;
+        headerEl.classList.remove('is-scrolled');
       }
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
     }, { passive: true });
   })();
 
