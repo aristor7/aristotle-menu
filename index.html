@@ -564,6 +564,8 @@
       border-radius: 0 0 16px 16px;
       padding: 8px 10px;
       margin-top: auto;
+      position: relative;
+      overflow: hidden;
     }
 
     .menu-card.featured .menu-card-footer {
@@ -575,6 +577,7 @@
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.01em;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
     }
 
     .menu-card-price span {
@@ -583,6 +586,68 @@
       color: var(--text-3);
       margin-left: 2px;
     }
+
+    /* qty badge that fades in next to the price once an item has been added */
+    .menu-card-qty-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--rust);
+      background: var(--rust-glow);
+      border: 1px solid rgba(160,82,45,0.18);
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 6px;
+      opacity: 0;
+      transform: translateX(-6px) scale(0.9);
+      transition: opacity 0.25s ease 0.05s, transform 0.25s ease 0.05s;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .menu-card-footer.has-qty .menu-card-qty-badge {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    /* controls wrapper: minus + plus, sized so the minus can animate in/out */
+    .menu-card-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .menu-card-minus {
+      width: 0;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--surface-2);
+      color: var(--rust);
+      border: 1px solid rgba(160,82,45,0.22);
+      font-size: 18px;
+      font-weight: 300;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      opacity: 0;
+      padding: 0;
+      transform: scaleX(0);
+      transform-origin: right center;
+      transition: width 0.28s cubic-bezier(0.4,0,0.2,1),
+                  opacity 0.22s ease,
+                  transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .menu-card-footer.has-qty .menu-card-minus {
+      width: 28px;
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    .menu-card-minus:hover { background: rgba(160,82,45,0.12); }
 
     .menu-card-add {
       width: 28px; height: 28px;
@@ -1175,7 +1240,7 @@
       <div class="card-grid">
 
         <!-- Featured: full-width row card -->
-        <div class="menu-card featured" data-search="tandoor lamb ribs slow-roasted charcoal sumac flatbread specials">
+        <div class="menu-card featured" data-search="tandoor lamb ribs slow-roasted charcoal sumac flatbread specials" data-item="Tandoor Lamb Ribs">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400" alt="Tandoor Lamb Ribs">
             <div class="menu-card-badge" data-key="tag_special">Today's Special</div>
@@ -1194,14 +1259,17 @@
               <div class="menu-card-meta" data-key="item_lamb_desc">Slow-roasted over charcoal, sumac onions & flatbread.</div>
             </div>
             <div class="menu-card-footer" style="border-radius:0 0 16px 0;">
-              <div class="menu-card-price">85,000 <span>UZS</span></div>
-              <button class="menu-card-add" onclick="addItem('Tandoor Lamb Ribs')" aria-label="Add">+</button>
+              <div class="menu-card-price">85,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+              <div class="menu-card-controls">
+                <button class="menu-card-minus" onclick="changeQty('Tandoor Lamb Ribs', -1)" aria-label="Remove">−</button>
+                <button class="menu-card-add" onclick="addItem('Tandoor Lamb Ribs')" aria-label="Add">+</button>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Featured: full-width row card -->
-        <div class="menu-card featured" data-search="osh palov plov saffron rice carrots lamb specials">
+        <div class="menu-card featured" data-search="osh palov plov saffron rice carrots lamb specials" data-item="Osh Palov">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=400" alt="Osh Palov">
             <div class="menu-card-badge" data-key="tag_popular">Most Ordered</div>
@@ -1220,8 +1288,11 @@
               <div class="menu-card-meta" data-key="item_palov_desc">Classic Uzbek plov — saffron rice, carrots & lamb. Feeds two.</div>
             </div>
             <div class="menu-card-footer" style="border-radius:0 0 16px 0;">
-              <div class="menu-card-price">65,000 <span>UZS</span></div>
-              <button class="menu-card-add" onclick="addItem('Osh Palov')" aria-label="Add">+</button>
+              <div class="menu-card-price">65,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+              <div class="menu-card-controls">
+                <button class="menu-card-minus" onclick="changeQty('Osh Palov', -1)" aria-label="Remove">−</button>
+                <button class="menu-card-add" onclick="addItem('Osh Palov')" aria-label="Add">+</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1236,7 +1307,7 @@
       <div class="section-label" data-key="cat_mains">Mains</div>
       <div class="card-grid">
 
-        <div class="menu-card" data-search="shashlik plate beef chicken skewers grilled peppers mains">
+        <div class="menu-card" data-search="shashlik plate beef chicken skewers grilled peppers mains" data-item="Shashlik Plate">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=300" alt="Shashlik">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1253,12 +1324,15 @@
             <div class="menu-card-meta" data-key="item_shashlik_desc">Beef & chicken skewers, grilled peppers</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">55,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Shashlik Plate')" aria-label="Add">+</button>
+            <div class="menu-card-price">55,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Shashlik Plate', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Shashlik Plate')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="lagman soup noodles lamb broth herbs mains">
+        <div class="menu-card" data-search="lagman soup noodles lamb broth herbs mains" data-item="Lagman Soup">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=300" alt="Lagman">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1275,12 +1349,15 @@
             <div class="menu-card-meta" data-key="item_lagman_desc">Hand-pulled noodles, lamb broth, herbs</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">38,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Lagman Soup')" aria-label="Add">+</button>
+            <div class="menu-card-price">38,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Lagman Soup', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Lagman Soup')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="samsa pastry lamb onion filling mains">
+        <div class="menu-card" data-search="samsa pastry lamb onion filling mains" data-item="Samsa (×3)">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=300" alt="Samsa">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1297,13 +1374,16 @@
             <div class="menu-card-meta" data-key="item_samsa_desc">Baked pastry, spiced lamb & onion filling</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">22,000 <span>UZS</span></div>
-            <!-- BUG FIX: key matches PRICES map exactly -->
-            <button class="menu-card-add" onclick="addItem('Samsa (×3)')" aria-label="Add">+</button>
+            <div class="menu-card-price">22,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Samsa (×3)', -1)" aria-label="Remove">−</button>
+              <!-- BUG FIX: key matches PRICES map exactly -->
+              <button class="menu-card-add" onclick="addItem('Samsa (×3)')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="dimlama braised vegetables lamb seasonal mains">
+        <div class="menu-card" data-search="dimlama braised vegetables lamb seasonal mains" data-item="Dimlama">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=300" alt="Dimlama">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1320,8 +1400,11 @@
             <div class="menu-card-meta" data-key="item_dimlama_desc">Slow-braised vegetables & lamb, seasonal</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">48,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Dimlama')" aria-label="Add">+</button>
+            <div class="menu-card-price">48,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Dimlama', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Dimlama')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
@@ -1335,7 +1418,7 @@
       <div class="section-label" data-key="cat_drinks">Drinks</div>
       <div class="card-grid">
 
-        <div class="menu-card" data-search="qora choy black tea nishallo drinks">
+        <div class="menu-card" data-search="qora choy black tea nishallo drinks" data-item="Qora Choy">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=300" alt="Black Tea">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1350,12 +1433,15 @@
             <div class="menu-card-meta" data-key="item_blacktea_desc">Black tea, served with nishallo</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">8,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Qora Choy')" aria-label="Add">+</button>
+            <div class="menu-card-price">8,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Qora Choy', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Qora Choy')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="kok choy green tea samarkand drinks">
+        <div class="menu-card" data-search="kok choy green tea samarkand drinks" data-item="Kok Choy">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300" alt="Green Tea">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1370,12 +1456,15 @@
             <div class="menu-card-meta" data-key="item_greentea_desc">Green tea, Samarkand blend</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">8,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Kok Choy')" aria-label="Add">+</button>
+            <div class="menu-card-price">8,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Kok Choy', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Kok Choy')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="ayran yogurt drink homemade drinks">
+        <div class="menu-card" data-search="ayran yogurt drink homemade drinks" data-item="Ayran">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300" alt="Ayran">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1390,12 +1479,15 @@
             <div class="menu-card-meta" data-key="item_ayran_desc">Chilled salted yogurt drink, homemade</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">12,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Ayran')" aria-label="Add">+</button>
+            <div class="menu-card-price">12,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Ayran', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Ayran')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="kompot apricot rose hip chilled drinks">
+        <div class="menu-card" data-search="kompot apricot rose hip chilled drinks" data-item="Kompot">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1497534446932-c925b458314e?w=300" alt="Kompot">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1410,8 +1502,11 @@
             <div class="menu-card-meta" data-key="item_kompot_desc">Dried apricot & rose hip, chilled</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">10,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Kompot')" aria-label="Add">+</button>
+            <div class="menu-card-price">10,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Kompot', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Kompot')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
@@ -1425,7 +1520,7 @@
       <div class="section-label" data-key="cat_desserts">Desserts</div>
       <div class="card-grid">
 
-        <div class="menu-card" data-search="halva bread sesame non flatbread desserts">
+        <div class="menu-card" data-search="halva bread sesame non flatbread desserts" data-item="Halva & Bread">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1567206563114-c179706e0f04?w=300" alt="Halva">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1442,12 +1537,15 @@
             <div class="menu-card-meta" data-key="item_halva_desc">Sesame halva, fresh non flatbread</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">15,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Halva & Bread')" aria-label="Add">+</button>
+            <div class="menu-card-price">15,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Halva & Bread', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Halva & Bread')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="chak-chak fried dough honey glaze desserts">
+        <div class="menu-card" data-search="chak-chak fried dough honey glaze desserts" data-item="Chak-Chak">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1562440499-64c9a111f713?w=300" alt="Chak-Chak">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1464,12 +1562,15 @@
             <div class="menu-card-meta" data-key="item_chakchak_desc">Fried dough with honey glaze</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">18,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Chak-Chak')" aria-label="Add">+</button>
+            <div class="menu-card-price">18,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Chak-Chak', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Chak-Chak')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="menu-card" data-search="fruit plate melon grapes apricot desserts">
+        <div class="menu-card" data-search="fruit plate melon grapes apricot desserts" data-item="Fruit Plate">
           <div class="menu-card-img">
             <img loading="lazy" src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=300" alt="Fruit Plate">
             <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
@@ -1486,8 +1587,11 @@
             <div class="menu-card-meta" data-key="item_fruit_desc">Seasonal melon, grapes, apricot</div>
           </div>
           <div class="menu-card-footer">
-            <div class="menu-card-price">25,000 <span>UZS</span></div>
-            <button class="menu-card-add" onclick="addItem('Fruit Plate')" aria-label="Add">+</button>
+            <div class="menu-card-price">25,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
+            <div class="menu-card-controls">
+              <button class="menu-card-minus" onclick="changeQty('Fruit Plate', -1)" aria-label="Remove">−</button>
+              <button class="menu-card-add" onclick="addItem('Fruit Plate')" aria-label="Add">+</button>
+            </div>
           </div>
         </div>
 
@@ -1857,6 +1961,7 @@
   function addItem(name) {
     if (!cart[name]) cart[name] = { qty: 0, note: '' };
     cart[name].qty += 1;
+    syncCardQty(name);
     updateCart();
     showToast(name + ' ' + T[currentLang].toast_added);
   }
@@ -1865,8 +1970,28 @@
     if (!cart[name]) return;
     cart[name].qty += delta;
     if (cart[name].qty <= 0) { delete cart[name]; openNotes.delete(name); }
+    syncCardQty(name);
     updateCart();
   }
+
+  /* reflects the cart qty onto the matching menu card: glides the price over,
+     reveals/hides the minus button, and updates the ×N badge */
+  function syncCardQty(name) {
+    const card = document.querySelector(`[data-item="${cssAttrSafe(name)}"]`);
+    if (!card) return;
+    const footer = card.querySelector('.menu-card-footer');
+    const badge  = card.querySelector('.menu-card-qty-badge');
+    const qty = cart[name] ? cart[name].qty : 0;
+
+    if (qty > 0) {
+      footer.classList.add('has-qty');
+      if (badge) badge.textContent = '×' + qty;
+    } else {
+      footer.classList.remove('has-qty');
+    }
+  }
+
+  function cssAttrSafe(name) { return name.replace(/"/g, '\\"'); }
 
   function toggleNote(name) {
     openNotes.has(name) ? openNotes.delete(name) : openNotes.add(name);
