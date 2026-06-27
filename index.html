@@ -81,11 +81,11 @@
       top: 0;
       z-index: 100;
       border-bottom: 1px solid rgba(255,255,255,0.06);
-      transition: padding 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+      transition: padding 0.32s var(--ease-out), box-shadow 0.3s var(--ease-out);
     }
 
     .header.is-scrolled {
-      padding: 9px 22px 8px;
+      padding: 8px 22px 8px;
       box-shadow: 0 8px 24px rgba(20,12,6,0.28);
     }
 
@@ -95,6 +95,8 @@
       justify-content: space-between;
     }
 
+    .header-text { overflow: hidden; }
+
     .restaurant-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 30px;
@@ -102,10 +104,10 @@
       color: #F5EDE2;
       line-height: 1;
       letter-spacing: 0.01em;
-      transition: font-size 0.3s var(--ease-out);
+      transition: font-size 0.32s var(--ease-out);
     }
 
-    .header.is-scrolled .restaurant-name { font-size: 22px; }
+    .header.is-scrolled .restaurant-name { font-size: 21px; }
 
     .restaurant-sub {
       font-size: 11px;
@@ -113,9 +115,8 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-top: 5px;
-      transition: max-height 0.3s var(--ease-out), opacity 0.2s ease, margin-top 0.3s var(--ease-out);
       max-height: 14px;
-      overflow: hidden;
+      transition: max-height 0.28s var(--ease-out), opacity 0.18s ease, margin-top 0.28s var(--ease-out);
     }
 
     .header.is-scrolled .restaurant-sub {
@@ -1298,7 +1299,7 @@
   <!-- ── STICKY HEADER ── -->
   <header class="header">
     <div class="header-top">
-      <div>
+      <div class="header-text">
         <div class="restaurant-name">Aristotle Café</div>
         <div class="restaurant-sub" data-key="table_sub">Table 7 · Tashkent</div>
       </div>
@@ -2097,21 +2098,36 @@
     const headerEl = document.querySelector('.header');
     let isScrolled = false;
     let ticking = false;
+    let settleTimer = null;
 
-    /* hysteresis: different thresholds for entering vs exiting the
-       compact state, so the shrink-induced layout shift can't flip
-       scrollY back across a single shared threshold and oscillate */
-    const SHRINK_AT  = 36;
-    const EXPAND_AT  = 12;
+    /* Hysteresis with a gap (70px) comfortably larger than the header's
+       own height change (~29px) when it toggles compact state. This is
+       the actual fix for the flicker: a single toggle's layout shift can
+       reposition scrollY by at most ~29px, which can no longer cross back
+       over a 70px-wide dead zone and re-trigger itself.
+       A short settle delay adds a second line of defense: a state change
+       only commits once scrollY has held still on the new side for one
+       beat, so even rapid programmatic scroll jumps can't cause rapid
+       toggling. */
+    const SHRINK_AT = 80;
+    const EXPAND_AT = 10;
+    const SETTLE_MS = 60;
+
+    function commit(next) {
+      if (next === isScrolled) return;
+      isScrolled = next;
+      headerEl.classList.toggle('is-scrolled', isScrolled);
+    }
 
     function update() {
       const y = window.scrollY;
-      if (!isScrolled && y > SHRINK_AT) {
-        isScrolled = true;
-        headerEl.classList.add('is-scrolled');
-      } else if (isScrolled && y < EXPAND_AT) {
-        isScrolled = false;
-        headerEl.classList.remove('is-scrolled');
+      const wantScrolled = isScrolled ? !(y < EXPAND_AT) : (y > SHRINK_AT);
+
+      if (wantScrolled !== isScrolled) {
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(() => commit(wantScrolled), SETTLE_MS);
+      } else {
+        clearTimeout(settleTimer);
       }
       ticking = false;
     }
