@@ -1005,6 +1005,70 @@
     }
     .modal-close:active { transform: scale(0.97); opacity: 0.92; }
 
+    /* quiet variant for a secondary "never mind" action sitting under
+       a more prominent choice — same family as .action-btn, not the
+       bold gradient, so it doesn't compete with the cash/card options */
+    .modal-close-secondary {
+      background: var(--surface);
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+    .modal-close-secondary:active { background: var(--surface-2); }
+
+    /* ── PAYMENT METHOD OPTIONS ────────────── */
+    .pay-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .pay-option {
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      border-radius: 14px;
+      padding: 20px 10px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color 0.18s var(--ease-out), background 0.18s var(--ease-out), transform 0.15s var(--ease-out);
+    }
+
+    .pay-option:hover {
+      border-color: var(--rust-pale);
+      background: var(--rust-glow);
+    }
+
+    .pay-option:active { transform: scale(0.96); }
+
+    .pay-option-icon {
+      width: 28px; height: 28px;
+      stroke: var(--rust);
+      fill: none;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .pay-option-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* a brief highlight on the chosen card right before the modal swaps
+       to the confirmation step, so the tap feels acknowledged */
+    .pay-option.chosen {
+      border-color: var(--rust);
+      background: var(--rust-glow);
+      box-shadow: 0 0 0 3px var(--rust-glow);
+    }
+
     /* ── RECEIPT MODAL ─────────────────────── */
     .receipt {
       background: #FEFCF8;
@@ -1880,10 +1944,41 @@
   <div class="modal-overlay" id="checkModal" onclick="closeModal('checkModal')">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"></div>
-      <div class="modal-eyebrow" data-key="pay_eyebrow">Payment</div>
-      <div class="modal-title" data-key="pay_title">Bill requested</div>
-      <div class="modal-desc" data-key="pay_desc">Your bill is being prepared. Staff will bring it to your table shortly.</div>
-      <button class="modal-close" onclick="closeModal('checkModal')" data-key="btn_dismiss">Dismiss</button>
+
+      <!-- Step 1: choose payment method -->
+      <div id="payChoiceStep">
+        <div class="modal-eyebrow" data-key="pay_eyebrow">Payment</div>
+        <div class="modal-title" data-key="pay_choice_title">How would you like to pay?</div>
+        <div class="modal-desc" data-key="pay_choice_desc">Let us know how you'd like to settle the bill, and the waiter will bring the right thing.</div>
+
+        <div class="pay-options">
+          <button class="pay-option" onclick="choosePayment('cash')">
+            <svg class="pay-option-icon" viewBox="0 0 24 24">
+              <rect x="2" y="6" width="20" height="12" rx="2"/>
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M6 6v.01M18 18v-.01"/>
+            </svg>
+            <span class="pay-option-label" data-key="pay_cash">Cash</span>
+          </button>
+          <button class="pay-option" onclick="choosePayment('card')">
+            <svg class="pay-option-icon" viewBox="0 0 24 24">
+              <rect x="2" y="5" width="20" height="14" rx="2"/>
+              <line x1="2" y1="10" x2="22" y2="10"/>
+            </svg>
+            <span class="pay-option-label" data-key="pay_card">Card</span>
+          </button>
+        </div>
+
+        <button class="modal-close modal-close-secondary" onclick="closeModal('checkModal')" data-key="btn_dismiss">Dismiss</button>
+      </div>
+
+      <!-- Step 2: confirmation, copy depends on the chosen method -->
+      <div id="payConfirmStep" style="display:none">
+        <div class="modal-eyebrow" data-key="pay_eyebrow">Payment</div>
+        <div class="modal-title" id="payConfirmTitle">Bill requested</div>
+        <div class="modal-desc" id="payConfirmDesc">Your bill is being prepared. Staff will bring it to your table shortly.</div>
+        <button class="modal-close" onclick="closeModal('checkModal')" data-key="btn_dismiss">Dismiss</button>
+      </div>
     </div>
   </div>
 
@@ -1914,6 +2009,12 @@
       order_title:'Your Order', order_empty:'Nothing added yet. Tap + on any item to add it.',
       pay_eyebrow:'Payment', pay_title:'Bill requested',
       pay_desc:'Your bill is being prepared. Staff will bring it to your table shortly.',
+      pay_choice_title:'How would you like to pay?',
+      pay_choice_desc:"Let us know how you'd like to settle the bill, and the waiter will bring the right thing.",
+      pay_cash:'Cash', pay_card:'Card',
+      pay_cash_title:'Cash requested', pay_cash_desc:'Staff will bring your bill and collect payment in cash shortly.',
+      pay_card_title:'Card requested', pay_card_desc:'Staff will bring your bill along with the card machine shortly.',
+      toast_payment_sent:'payment noted',
       total_label:'Total', toast_added:'added',
       note_add:'add note', note_edit:'note', note_placeholder:'e.g. no pineapple, allergic…',
       search_placeholder:'Search dishes…', search_results:'Results for',
@@ -1943,6 +2044,12 @@
       order_title:'Siparişiniz', order_empty:'Henüz eklenmedi. Eklemek için + tuşuna basın.',
       pay_eyebrow:'Ödeme', pay_title:'Hesap istendi',
       pay_desc:'Hesabınız hazırlanıyor. Personel kısa süre içinde masanıza getirecek.',
+      pay_choice_title:'Nasıl ödemek istersiniz?',
+      pay_choice_desc:'Hesabı nasıl ödemek istediğinizi belirtin, garson buna göre gelsin.',
+      pay_cash:'Nakit', pay_card:'Kart',
+      pay_cash_title:'Nakit seçildi', pay_cash_desc:'Personel hesabınızı getirip nakit ödeme alacak.',
+      pay_card_title:'Kart seçildi', pay_card_desc:'Personel hesabınızı kart makinesiyle birlikte getirecek.',
+      toast_payment_sent:'iletildi',
       total_label:'Toplam', toast_added:'eklendi',
       note_add:'not ekle', note_edit:'not', note_placeholder:'örn. ananas yok, alerjim var…',
       search_placeholder:'Yemek ara…', search_results:'Sonuçlar',
@@ -1972,6 +2079,12 @@
       order_title:'Ваш заказ', order_empty:'Ничего не добавлено. Нажмите + рядом с блюдом.',
       pay_eyebrow:'Оплата', pay_title:'Счёт запрошен',
       pay_desc:'Счёт готовится. Персонал скоро принесёт его к вашему столику.',
+      pay_choice_title:'Как вы хотите оплатить?',
+      pay_choice_desc:'Укажите способ оплаты, и официант принесёт то, что нужно.',
+      pay_cash:'Наличные', pay_card:'Карта',
+      pay_cash_title:'Выбрано: наличные', pay_cash_desc:'Персонал принесёт счёт и примет оплату наличными.',
+      pay_card_title:'Выбрано: карта', pay_card_desc:'Персонал принесёт счёт вместе с терминалом для карты.',
+      toast_payment_sent:'передано',
       total_label:'Итого', toast_added:'добавлено',
       note_add:'добавить заметку', note_edit:'заметка', note_placeholder:'напр. без ананаса, аллергия…',
       search_placeholder:'Поиск блюд…', search_results:'Результаты',
@@ -2001,6 +2114,12 @@
       order_title:'Buyurtmangiz', order_empty:"Hali hech narsa qo'shilmagan. Qo'shish uchun + tugmasini bosing.",
       pay_eyebrow:"To'lov", pay_title:"Hisob so'raldi",
       pay_desc:"Hisobingiz tayyorlanmoqda. Xodim tez orada stolingizga olib keladi.",
+      pay_choice_title:"Qanday to'lashni xohlaysiz?",
+      pay_choice_desc:"To'lov usulini tanlang, ofitsiant shunga qarab keladi.",
+      pay_cash:'Naqd', pay_card:'Karta',
+      pay_cash_title:'Naqd tanlandi', pay_cash_desc:"Xodim hisobni olib kelib, naqd pulda to'lovni qabul qiladi.",
+      pay_card_title:'Karta tanlandi', pay_card_desc:"Xodim hisobni karta terminali bilan birga olib keladi.",
+      toast_payment_sent:'yuborildi',
       total_label:'Jami', toast_added:"qo'shildi",
       note_add:"izoh qo'sh", note_edit:'izoh', note_placeholder:"masalan: ananasiz, allergiya bor…",
       search_placeholder:'Taom qidirish…', search_results:'Natijalar',
@@ -2471,7 +2590,36 @@
 
   function callWaiter()     { openModal('waiterModal'); }
   function openOrderModal() { updateCart(); openModal('orderModal'); }
-  function openCheckModal() { openModal('checkModal'); }
+
+  function openCheckModal() {
+    /* always start back at the cash/card choice, even if a previous
+       visit already reached the confirmation step */
+    document.getElementById('payChoiceStep').style.display = '';
+    document.getElementById('payConfirmStep').style.display = 'none';
+    document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('chosen'));
+    openModal('checkModal');
+  }
+
+  function choosePayment(method) {
+    const chosenBtn = document.querySelector(`.pay-option[onclick="choosePayment('${method}')"]`);
+    if (chosenBtn) chosenBtn.classList.add('chosen');
+    if (navigator.vibrate) navigator.vibrate(8);
+
+    const t = T[currentLang];
+    const title = method === 'cash' ? t.pay_cash_title : t.pay_card_title;
+    const desc  = method === 'cash' ? t.pay_cash_desc  : t.pay_card_desc;
+
+    /* brief pause so the tap registers visually before the modal swaps,
+       mirrors the same beat used elsewhere (toast, add-button pop) */
+    setTimeout(() => {
+      document.getElementById('payConfirmTitle').textContent = title;
+      document.getElementById('payConfirmDesc').textContent  = desc;
+      document.getElementById('payChoiceStep').style.display  = 'none';
+      document.getElementById('payConfirmStep').style.display = '';
+    }, 260);
+
+    showToast((method === 'cash' ? t.pay_cash : t.pay_card) + ' ' + t.toast_payment_sent);
+  }
 
   function openModal(id) {
     document.getElementById(id).classList.add('open');
