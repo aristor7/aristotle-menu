@@ -1365,7 +1365,7 @@
     <div class="header-top">
       <div class="header-text">
         <div class="restaurant-name">Aristotle Café</div>
-        <div class="restaurant-sub" data-key="table_sub">Table 7 · Tashkent</div>
+        <div class="restaurant-sub" id="headerTableSub" data-key="table_sub">Table 7 · Tashkent</div>
       </div>
       <div>
         <div class="lang-switcher">
@@ -1493,369 +1493,11 @@
 
     <div class="search-results-label" id="searchResultsLabel"></div>
 
-    <!-- ── CHEF'S PICKS ── -->
-    <section class="section" id="sec-specials">
-      <div class="section-label" data-key="cat_specials">Chef's Picks</div>
-      <div class="card-grid">
+    <!-- Menu sections are rendered here by renderMenu(), reading from
+         menu-data.json. See the page's script block for the render
+         logic, and menu-data.json for the actual dish content. -->
+    <div id="menuSections"></div>
 
-        <!-- Featured: full-width row card -->
-        <div class="menu-card featured" data-search="tandoor lamb ribs slow-roasted charcoal sumac flatbread specials" data-item="Tandoor Lamb Ribs">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400" alt="Tandoor Lamb Ribs">
-            <div class="menu-card-badge" data-key="tag_special">Today's Special</div>
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
-            <div class="menu-card-body">
-              <div class="menu-card-name" data-key="item_lamb_name">Tandoor Lamb Ribs</div>
-              <div class="menu-card-info">
-                <span>600g</span>
-                <span class="menu-card-info-sep"></span>
-                <span>520 kcal</span>
-              </div>
-              <div class="menu-card-meta" data-key="item_lamb_desc">Slow-roasted over charcoal, sumac onions & flatbread.</div>
-            </div>
-            <div class="menu-card-footer" style="border-radius:0 0 16px 0;">
-              <div class="menu-card-price">85,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-              <div class="menu-card-controls">
-                <button class="menu-card-minus" onclick="changeQty('Tandoor Lamb Ribs', -1)" aria-label="Remove">−</button>
-                <button class="menu-card-add" onclick="addItem('Tandoor Lamb Ribs')" aria-label="Add">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Featured: full-width row card -->
-        <div class="menu-card featured" data-search="osh palov plov saffron rice carrots lamb specials" data-item="Osh Palov">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=400" alt="Osh Palov">
-            <div class="menu-card-badge" data-key="tag_popular">Most Ordered</div>
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
-            <div class="menu-card-body">
-              <div class="menu-card-name" data-key="item_palov_name">Osh Palov</div>
-              <div class="menu-card-info">
-                <span>800g</span>
-                <span class="menu-card-info-sep"></span>
-                <span>680 kcal</span>
-              </div>
-              <div class="menu-card-meta" data-key="item_palov_desc">Classic Uzbek plov — saffron rice, carrots & lamb. Feeds two.</div>
-            </div>
-            <div class="menu-card-footer" style="border-radius:0 0 16px 0;">
-              <div class="menu-card-price">65,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-              <div class="menu-card-controls">
-                <button class="menu-card-minus" onclick="changeQty('Osh Palov', -1)" aria-label="Remove">−</button>
-                <button class="menu-card-add" onclick="addItem('Osh Palov')" aria-label="Add">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="divider" id="div-specials"></div>
-
-    <!-- ── MAINS ── -->
-    <section class="section" id="sec-mains">
-      <div class="section-label" data-key="cat_mains">Mains</div>
-      <div class="card-grid">
-
-        <div class="menu-card" data-search="shashlik plate beef chicken skewers grilled peppers mains" data-item="Shashlik Plate">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=300" alt="Shashlik">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_shashlik_name">Shashlik Plate</div>
-            <div class="menu-card-info">
-              <span>350g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>440 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_shashlik_desc">Beef & chicken skewers, grilled peppers</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">55,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Shashlik Plate', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Shashlik Plate')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="lagman soup noodles lamb broth herbs mains" data-item="Lagman Soup">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=300" alt="Lagman">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_lagman_name">Lagman Soup</div>
-            <div class="menu-card-info">
-              <span>420g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>360 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_lagman_desc">Hand-pulled noodles, lamb broth, herbs</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">38,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Lagman Soup', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Lagman Soup')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="samsa pastry lamb onion filling mains" data-item="Samsa (×3)">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=300" alt="Samsa">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_samsa_name">Samsa (×3)</div>
-            <div class="menu-card-info">
-              <span>270g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>390 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_samsa_desc">Baked pastry, spiced lamb & onion filling</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">22,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Samsa (×3)', -1)" aria-label="Remove">−</button>
-              <!-- BUG FIX: key matches PRICES map exactly -->
-              <button class="menu-card-add" onclick="addItem('Samsa (×3)')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="dimlama braised vegetables lamb seasonal mains" data-item="Dimlama">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1547592180-85f173990554?w=300" alt="Dimlama">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_dimlama_name">Dimlama</div>
-            <div class="menu-card-info">
-              <span>500g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>310 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_dimlama_desc">Slow-braised vegetables & lamb, seasonal</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">48,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Dimlama', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Dimlama')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="divider" id="div-mains"></div>
-
-    <!-- ── DRINKS ── -->
-    <section class="section" id="sec-drinks">
-      <div class="section-label" data-key="cat_drinks">Drinks</div>
-      <div class="card-grid">
-
-        <div class="menu-card" data-search="qora choy black tea nishallo drinks" data-item="Qora Choy">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=300" alt="Black Tea">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_blacktea_name">Qora Choy</div>
-            <div class="menu-card-info">
-              <span>300ml</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_blacktea_desc">Black tea, served with nishallo</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">8,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Qora Choy', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Qora Choy')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="kok choy green tea samarkand drinks" data-item="Kok Choy">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300" alt="Green Tea">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_greentea_name">Kok Choy</div>
-            <div class="menu-card-info">
-              <span>300ml</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_greentea_desc">Green tea, Samarkand blend</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">8,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Kok Choy', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Kok Choy')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="ayran yogurt drink homemade drinks" data-item="Ayran">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300" alt="Ayran">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_ayran_name">Ayran</div>
-            <div class="menu-card-info">
-              <span>250ml</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_ayran_desc">Chilled salted yogurt drink, homemade</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">12,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Ayran', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Ayran')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="kompot apricot rose hip chilled drinks" data-item="Kompot">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1497534446932-c925b458314e?w=300" alt="Kompot">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_kompot_name">Kompot</div>
-            <div class="menu-card-info">
-              <span>300ml</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_kompot_desc">Dried apricot & rose hip, chilled</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">10,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Kompot', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Kompot')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <div class="divider" id="div-drinks"></div>
-
-    <!-- ── DESSERTS ── -->
-    <section class="section" id="sec-desserts">
-      <div class="section-label" data-key="cat_desserts">Desserts</div>
-      <div class="card-grid">
-
-        <div class="menu-card" data-search="halva bread sesame non flatbread desserts" data-item="Halva & Bread">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1567206563114-c179706e0f04?w=300" alt="Halva">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_halva_name">Halva & Bread</div>
-            <div class="menu-card-info">
-              <span>180g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>290 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_halva_desc">Sesame halva, fresh non flatbread</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">15,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Halva & Bread', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Halva & Bread')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="chak-chak fried dough honey glaze desserts" data-item="Chak-Chak">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1562440499-64c9a111f713?w=300" alt="Chak-Chak">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_chakchak_name">Chak-Chak</div>
-            <div class="menu-card-info">
-              <span>200g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>480 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_chakchak_desc">Fried dough with honey glaze</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">18,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Chak-Chak', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Chak-Chak')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-search="fruit plate melon grapes apricot desserts" data-item="Fruit Plate">
-          <div class="menu-card-img">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=300" alt="Fruit Plate">
-            <button class="menu-card-fav" onclick="toggleFav(this)" aria-label="Favourite">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-          </div>
-          <div class="menu-card-body">
-            <div class="menu-card-name" data-key="item_fruit_name">Fruit Plate</div>
-            <div class="menu-card-info">
-              <span>350g</span>
-              <span class="menu-card-info-sep"></span>
-              <span>140 kcal</span>
-            </div>
-            <div class="menu-card-meta" data-key="item_fruit_desc">Seasonal melon, grapes, apricot</div>
-          </div>
-          <div class="menu-card-footer">
-            <div class="menu-card-price">25,000 <span>UZS</span><span class="menu-card-qty-badge">×1</span></div>
-            <div class="menu-card-controls">
-              <button class="menu-card-minus" onclick="changeQty('Fruit Plate', -1)" aria-label="Remove">−</button>
-              <button class="menu-card-add" onclick="addItem('Fruit Plate')" aria-label="Add">+</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
 
     <div id="noResults" class="no-results">
       <svg class="no-results-icon" viewBox="0 0 24 24">
@@ -1918,7 +1560,7 @@
       <div class="receipt-body">
         <div class="receipt-header">
           <div class="receipt-logo">Aristotle Café</div>
-          <div class="receipt-address" data-key="table_sub">Table 7 · Tashkent</div>
+          <div class="receipt-address" id="receiptTableSub" data-key="table_sub">Table 7 · Tashkent</div>
           <div class="receipt-address" id="receiptDateTime"></div>
         </div>
         <div class="receipt-col-header">
@@ -1986,7 +1628,7 @@
   /* ── TRANSLATIONS ────────────────────────── */
   const T = {
     en: {
-      status:'Open', table_sub:'Table 7 · Tashkent',
+      status:'Open', table_sub:'Table {n} · Tashkent',
       cat_all:'All', cat_specials:"Chef's Picks", cat_mains:'Mains', cat_drinks:'Drinks', cat_desserts:'Desserts', cat_favourites:'Saved items',
       tag_special:"Today's Special", tag_popular:'Most Ordered', add_btn:'Add to order',
       item_lamb_name:'Tandoor Lamb Ribs', item_lamb_desc:'Slow-roasted over charcoal, sumac onions & flatbread.',
@@ -2021,7 +1663,7 @@
       no_results_title:'Nothing found', no_results_sub:'Try a different word or browse categories above.',
     },
     tr: {
-      status:'Açık', table_sub:'Masa 7 · Taşkent',
+      status:'Açık', table_sub:'Masa {n} · Taşkent',
       cat_all:'Tümü', cat_specials:'Şefin Seçimleri', cat_mains:'Ana Yemekler', cat_drinks:'İçecekler', cat_desserts:'Tatlılar', cat_favourites:'Kaydedilenler',
       tag_special:'Günün Önerisi', tag_popular:'En Çok Sipariş', add_btn:'Siparişe ekle',
       item_lamb_name:'Tandır Kuzu Kaburga', item_lamb_desc:'Mangal ateşinde yavaş pişirilmiş, sumak soğanı ve taze ekmek ile.',
@@ -2056,7 +1698,7 @@
       no_results_title:'Sonuç bulunamadı', no_results_sub:'Başka bir kelime deneyin veya yukarıdaki kategorilere göz atın.',
     },
     ru: {
-      status:'Открыто', table_sub:'Стол 7 · Ташкент',
+      status:'Открыто', table_sub:'Стол {n} · Ташкент',
       cat_all:'Всё', cat_specials:'От шефа', cat_mains:'Основные', cat_drinks:'Напитки', cat_desserts:'Десерты', cat_favourites:'Избранное',
       tag_special:'Блюдо дня', tag_popular:'Популярное', add_btn:'Добавить',
       item_lamb_name:'Рёбра ягнёнка в тандыре', item_lamb_desc:'Медленно запечённые на углях, с луком сумах и лепёшкой.',
@@ -2091,7 +1733,7 @@
       no_results_title:'Ничего не найдено', no_results_sub:'Попробуйте другое слово или выберите категорию выше.',
     },
     uz: {
-      status:'Ochiq', table_sub:'7-stol · Toshkent',
+      status:'Ochiq', table_sub:'{n}-stol · Toshkent',
       cat_all:'Barchasi', cat_specials:'Oshpaz tavsiyasi', cat_mains:'Asosiy taomlar', cat_drinks:'Ichimliklar', cat_desserts:'Shirinliklar', cat_favourites:'Saqlangan',
       tag_special:'Kunlik taom', tag_popular:"Eng ko'p buyurtma", add_btn:"Buyurtmaga qo'sh",
       item_lamb_name:"Tandir qo'zi qovurg'asi", item_lamb_desc:"Ko'mirda sekin pishirilgan, sumak piyoz va yangi non bilan.",
@@ -2126,6 +1768,248 @@
       no_results_title:'Hech narsa topilmadi', no_results_sub:"Boshqa so'z bilan urinib ko'ring yoki yuqoridagi turkumlarga qarang.",
     }
   };
+
+  /* ── TABLE NUMBER (from QR code URL) ─────────
+     Each table's QR code points to the same site with ?table=N in the
+     URL — e.g. aristor7.github.io/aristotle/?table=12. We read it once
+     on load and keep it for the rest of the session (persistence layer
+     below also keys storage by table so two tables never mix carts). */
+  function getTableNumber() {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get('table');
+    if (fromUrl && /^[a-zA-Z0-9_-]{1,12}$/.test(fromUrl)) {
+      sessionStorage.setItem('aristotle_table', fromUrl);
+      return fromUrl;
+    }
+    /* fall back to whatever table this browser tab already had this
+       session, then to a placeholder so the page never looks broken
+       if someone opens it with no QR (e.g. testing on a laptop) */
+    return sessionStorage.getItem('aristotle_table') || '—';
+  }
+
+  const TABLE_NUMBER = getTableNumber();
+
+  function applyTableNumber() {
+    const headerEl  = document.getElementById('headerTableSub');
+    const receiptEl = document.getElementById('receiptTableSub');
+    const template  = (T[currentLang].table_sub || '').replace('{n}', TABLE_NUMBER);
+    if (headerEl)  headerEl.textContent  = template;
+    if (receiptEl) receiptEl.textContent = template;
+  }
+
+  /* ── PERSISTENCE (localStorage, keyed per table) ─────
+     A dropped wifi connection or an accidental tab close shouldn't
+     lose a customer's order. Cart, notes, favourites and language are
+     saved as they change and restored on load. Keying by table number
+     means table 4's saved cart never bleeds into table 9 if the same
+     phone somehow loads both (e.g. a staff member testing). */
+  const STORAGE_KEY = 'aristotle_session_' + TABLE_NUMBER;
+
+  function saveSession() {
+    try {
+      const data = {
+        cart,
+        favourites: [...favourites],
+        lang: currentLang,
+        savedAt: Date.now()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+      /* storage can fail (quota, private mode) — never block the UI on it */
+      console.warn('Could not save session:', e);
+    }
+  }
+
+  function loadSession() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      /* discard sessions older than 6 hours — a stale cart from
+         yesterday's lunch shouldn't reappear at tonight's dinner */
+      if (!data.savedAt || Date.now() - data.savedAt > 6 * 60 * 60 * 1000) {
+        localStorage.removeItem(STORAGE_KEY);
+        return null;
+      }
+      return data;
+    } catch (e) {
+      console.warn('Could not load saved session:', e);
+      return null;
+    }
+  }
+
+  /* ── MENU DATA (loaded from menu-data.json) ──
+     Restaurant staff edit menu-data.json to change dishes, prices, and
+     descriptions — no HTML editing required. The page falls back to a
+     small built-in placeholder menu if the file is missing or broken,
+     so a typo in the JSON never takes the whole site down. */
+  let MENU_ITEMS = [];
+  let CURRENCY = 'UZS';
+
+  const FALLBACK_MENU = {
+    currency: 'UZS',
+    items: [{
+      id: 'placeholder',
+      category: 'mains',
+      featured: false,
+      price: 0,
+      weight: '', kcal: null, image: '', badge: null,
+      name: { en: 'Menu unavailable', tr: 'Menü yok', ru: 'Меню недоступно', uz: 'Menyu mavjud emas' },
+      desc: {
+        en: 'menu-data.json could not be loaded. Check the file exists and is valid JSON.',
+        tr: 'menu-data.json yüklenemedi.', ru: 'Не удалось загрузить menu-data.json.',
+        uz: "menu-data.json yuklanmadi."
+      }
+    }]
+  };
+
+  const CATEGORY_LABELS = { specials: 'cat_specials', mains: 'cat_mains', drinks: 'cat_drinks', desserts: 'cat_desserts' };
+  const CATEGORY_ORDER = ['specials', 'mains', 'drinks', 'desserts'];
+
+  async function loadMenuData() {
+    try {
+      const res = await fetch('menu-data.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (!Array.isArray(data.items) || !data.items.length) throw new Error('No items in menu-data.json');
+      MENU_ITEMS = data.items;
+      CURRENCY = data.currency || 'UZS';
+    } catch (e) {
+      console.warn('Falling back to placeholder menu:', e);
+      MENU_ITEMS = FALLBACK_MENU.items;
+      CURRENCY = FALLBACK_MENU.currency;
+    }
+  }
+
+  function priceFor(id) {
+    const item = MENU_ITEMS.find(i => i.id === id);
+    return item ? item.price : 0;
+  }
+
+  function nameFor(id, lang) {
+    const item = MENU_ITEMS.find(i => i.id === id);
+    if (!item) return id;
+    return (item.name && (item.name[lang] || item.name.en)) || id;
+  }
+
+  /* builds the search haystack the same way the old hardcoded
+     data-search attributes did: name + desc words + category tag last */
+  function searchTextFor(item) {
+    const en = (item.name.en + ' ' + item.desc.en).toLowerCase();
+    return en + ' ' + item.category;
+  }
+
+  function renderMenuCard(item) {
+    const safeId = item.id;
+    const name = nameFor(safeId, currentLang);
+    const desc = (item.desc && (item.desc[currentLang] || item.desc.en)) || '';
+    const priceFmt = fmt(item.price);
+    const metaParts = [];
+    if (item.weight) metaParts.push(`<span>${escapeHtml(item.weight)}</span>`);
+    if (item.kcal)   metaParts.push(`<span>${escapeHtml(String(item.kcal))} kcal</span>`);
+    const metaHtml = metaParts.length
+      ? `<div class="menu-card-info">${metaParts.join('<span class="menu-card-info-sep"></span>')}</div>`
+      : '';
+    const badgeHtml = item.badge
+      ? `<div class="menu-card-badge">${escapeHtml(item.badge)}</div>`
+      : '';
+    const isFav = favourites.has(safeId) ? ' active' : '';
+
+    if (item.featured) {
+      return `
+        <div class="menu-card featured" data-search="${escapeHtml(searchTextFor(item))}" data-item="${escapeHtml(safeId)}">
+          <div class="menu-card-img">
+            <img loading="lazy" src="${escapeHtml(item.image)}" alt="${escapeHtml(name)}">
+            ${badgeHtml}
+            <button class="menu-card-fav${isFav}" onclick="toggleFav(this)" aria-label="Favourite">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div style="display:flex;flex-direction:column;flex:1;min-width:0;">
+            <div class="menu-card-body">
+              <div class="menu-card-name">${escapeHtml(name)}</div>
+              ${metaHtml}
+              <div class="menu-card-meta">${escapeHtml(desc)}</div>
+            </div>
+            <div class="menu-card-footer" style="border-radius:0 0 16px 0;">
+              <div class="menu-card-price">${priceFmt} <span>${escapeHtml(CURRENCY)}</span><span class="menu-card-qty-badge">×1</span></div>
+              <div class="menu-card-controls">
+                <button class="menu-card-minus" onclick="changeQty('${escapeJs(safeId)}', -1)" aria-label="Remove">−</button>
+                <button class="menu-card-add" onclick="addItem('${escapeJs(safeId)}')" aria-label="Add">+</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    return `
+      <div class="menu-card" data-search="${escapeHtml(searchTextFor(item))}" data-item="${escapeHtml(safeId)}">
+        <div class="menu-card-img">
+          <img loading="lazy" src="${escapeHtml(item.image)}" alt="${escapeHtml(name)}">
+          ${badgeHtml}
+          <button class="menu-card-fav${isFav}" onclick="toggleFav(this)" aria-label="Favourite">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">${escapeHtml(name)}</div>
+          ${metaHtml}
+          <div class="menu-card-meta">${escapeHtml(desc)}</div>
+        </div>
+        <div class="menu-card-footer">
+          <div class="menu-card-price">${priceFmt} <span>${escapeHtml(CURRENCY)}</span><span class="menu-card-qty-badge">×1</span></div>
+          <div class="menu-card-controls">
+            <button class="menu-card-minus" onclick="changeQty('${escapeJs(safeId)}', -1)" aria-label="Remove">−</button>
+            <button class="menu-card-add" onclick="addItem('${escapeJs(safeId)}')" aria-label="Add">+</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderMenu() {
+    const root = document.getElementById('menuSections');
+    if (!root) return;
+
+    const byCategory = {};
+    CATEGORY_ORDER.forEach(c => byCategory[c] = []);
+    MENU_ITEMS.forEach(item => {
+      if (!byCategory[item.category]) byCategory[item.category] = [];
+      byCategory[item.category].push(item);
+    });
+
+    const sectionsHtml = CATEGORY_ORDER
+      .filter(cat => byCategory[cat] && byCategory[cat].length)
+      .map((cat, i, arr) => {
+        const labelKey = CATEGORY_LABELS[cat] || cat;
+        const cardsHtml = byCategory[cat].map(renderMenuCard).join('');
+        const isLast = i === arr.length - 1;
+        return `
+          <section class="section" id="sec-${escapeHtml(cat)}">
+            <div class="section-label" data-key="${escapeHtml(labelKey)}">${escapeHtml(T[currentLang][labelKey] || cat)}</div>
+            <div class="card-grid">${cardsHtml}</div>
+          </section>
+          ${isLast ? '' : `<div class="divider" id="div-${escapeHtml(cat)}"></div>`}`;
+      }).join('');
+
+    root.innerHTML = sectionsHtml;
+
+    /* re-sync cart quantities and qty badges onto the freshly rendered
+       cards, since innerHTML just replaced them with fresh DOM nodes */
+    Object.keys(cart).forEach(syncCardQty);
+
+    /* fade-in for any images in the new markup, same treatment as before */
+    document.querySelectorAll('.menu-card-img img').forEach(img => {
+      if (img.complete && img.naturalWidth > 0) {
+        img.classList.add('loaded');
+      } else {
+        img.addEventListener('load', () => img.classList.add('loaded'));
+      }
+    });
+
+    /* filters (search/category/favourites) need to be re-applied since
+       the cards are new DOM nodes with no filtered-out state yet */
+    applyFilters();
+  }
 
   /* ── HERO CAROUSEL ───────────────────────── */
   let heroIndex = 0;
@@ -2263,13 +2147,13 @@
 
   function toggleFav(btn) {
     const card = btn.closest('[data-item]');
-    const name = card ? card.getAttribute('data-item') : btn.dataset.fallbackName || '';
-    const isFav = favourites.has(name);
+    const id = card ? card.getAttribute('data-item') : btn.dataset.fallbackName || '';
+    const isFav = favourites.has(id);
     if (isFav) {
-      favourites.delete(name);
+      favourites.delete(id);
       btn.classList.remove('active');
     } else {
-      favourites.add(name);
+      favourites.add(id);
       btn.classList.add('active');
       btn.classList.remove('bursting');
       requestAnimationFrame(() => {
@@ -2278,6 +2162,7 @@
       });
     }
     if (activeCategory === 'favourites') applyFilters();
+    saveSession();
   }
 
   /* ── SEARCH ──────────────────────────────── */
@@ -2401,44 +2286,37 @@
       if (t[key] !== undefined) el.textContent = t[key];
     });
     document.getElementById('searchInput').placeholder = t.search_placeholder;
+    /* the generic sweep above just overwrote the table subtitle with
+       its raw '{n}' template — fill in the real table number now */
+    applyTableNumber();
+    /* dish names/descriptions live in menu-data.json, not in T, so a
+       language switch needs a full re-render to pick up the new locale */
+    renderMenu();
     updateCart();
+    saveSession();
   }
 
-  /* ── PRICES ──────────────────────────────── */
-  /* BUG FIX: key 'Samsa (×3)' now matches addItem call exactly */
-  const PRICES = {
-    'Tandoor Lamb Ribs': 85000,
-    'Osh Palov':         65000,
-    'Shashlik Plate':    55000,
-    'Lagman Soup':       38000,
-    'Samsa (×3)':        22000,   /* was 'Samsa' — fixed */
-    'Dimlama':           48000,
-    'Qora Choy':          8000,
-    'Kok Choy':           8000,
-    'Ayran':             12000,
-    'Kompot':            10000,
-    'Halva & Bread':     15000,
-    'Chak-Chak':         18000,
-    'Fruit Plate':       25000,
-  };
-
   /* ── CART ────────────────────────────────── */
+  /* cart is keyed by item.id (stable, language-independent) rather
+     than by display name — a translated or renamed dish no longer
+     breaks the cart the way the old name-keyed version could. */
   const cart = {};
   const openNotes = new Set();
 
-  function addItem(name) {
-    if (!cart[name]) cart[name] = { qty: 0, note: '' };
-    cart[name].qty += 1;
-    syncCardQty(name);
+  function addItem(id) {
+    if (!cart[id]) cart[id] = { qty: 0, note: '' };
+    cart[id].qty += 1;
+    syncCardQty(id);
     updateCart();
-    showToast(name + ' ' + T[currentLang].toast_added);
+    showToast(nameFor(id, currentLang) + ' ' + T[currentLang].toast_added);
     bounceCartCount();
-    popAddButton(name);
+    popAddButton(id);
     if (navigator.vibrate) navigator.vibrate(8);
+    saveSession();
   }
 
-  function popAddButton(name) {
-    const card = document.querySelector(`[data-item="${cssAttrSafe(name)}"]`);
+  function popAddButton(id) {
+    const card = document.querySelector(`[data-item="${cssAttrSafe(id)}"]`);
     const btn = card && card.querySelector('.menu-card-add');
     if (!btn) return;
     btn.classList.remove('popping');
@@ -2457,22 +2335,23 @@
     });
   }
 
-  function changeQty(name, delta) {
-    if (!cart[name]) return;
-    cart[name].qty += delta;
-    if (cart[name].qty <= 0) { delete cart[name]; openNotes.delete(name); }
-    syncCardQty(name);
+  function changeQty(id, delta) {
+    if (!cart[id]) return;
+    cart[id].qty += delta;
+    if (cart[id].qty <= 0) { delete cart[id]; openNotes.delete(id); }
+    syncCardQty(id);
     updateCart();
+    saveSession();
   }
 
   /* reflects the cart qty onto the matching menu card: glides the price over,
      reveals/hides the minus button, and updates the ×N badge */
-  function syncCardQty(name) {
-    const card = document.querySelector(`[data-item="${cssAttrSafe(name)}"]`);
+  function syncCardQty(id) {
+    const card = document.querySelector(`[data-item="${cssAttrSafe(id)}"]`);
     if (!card) return;
     const footer = card.querySelector('.menu-card-footer');
     const badge  = card.querySelector('.menu-card-qty-badge');
-    const qty = cart[name] ? cart[name].qty : 0;
+    const qty = cart[id] ? cart[id].qty : 0;
 
     if (qty > 0) {
       footer.classList.add('has-qty');
@@ -2482,22 +2361,22 @@
     }
   }
 
-  function cssAttrSafe(name) { return name.replace(/"/g, '\\"'); }
+  function cssAttrSafe(id) { return String(id).replace(/"/g, '\\"'); }
 
-  function toggleNote(name) {
-    openNotes.has(name) ? openNotes.delete(name) : openNotes.add(name);
+  function toggleNote(id) {
+    openNotes.has(id) ? openNotes.delete(id) : openNotes.add(id);
     updateCart();
-    if (openNotes.has(name)) {
+    if (openNotes.has(id)) {
       requestAnimationFrame(() => {
-        const ta = document.getElementById('note-ta-' + cssSafe(name));
+        const ta = document.getElementById('note-ta-' + cssSafe(id));
         if (ta) ta.focus();
       });
     }
   }
 
-  function updateNote(name, value) {
-    if (cart[name]) cart[name].note = value;
-    const toggle = document.getElementById('note-toggle-' + cssSafe(name));
+  function updateNote(id, value) {
+    if (cart[id]) cart[id].note = value;
+    const toggle = document.getElementById('note-toggle-' + cssSafe(id));
     if (toggle) {
       const hasNote = value.trim().length > 0;
       toggle.classList.toggle('has-note', hasNote);
@@ -2505,9 +2384,10 @@
         hasNote ? (value.trim().length > 22 ? value.trim().slice(0,22)+'…' : value.trim())
                 : T[currentLang].note_add;
     }
+    saveSession();
   }
 
-  function cssSafe(n) { return n.replace(/[^a-zA-Z0-9]/g,'_'); }
+  function cssSafe(n) { return String(n).replace(/[^a-zA-Z0-9]/g,'_'); }
   function fmt(n)     { return n.toLocaleString('en-US'); }
 
   function escapeHtml(s) {
@@ -2530,28 +2410,29 @@
     }
 
     let grandTotal = 0;
-    listEl.innerHTML = Object.entries(cart).map(([name, data]) => {
+    listEl.innerHTML = Object.entries(cart).map(([id, data]) => {
       const { qty, note } = data;
-      const line = (PRICES[name] || 0) * qty;
+      const displayName = nameFor(id, currentLang);
+      const line = priceFor(id) * qty;
       grandTotal += line;
-      const safe    = cssSafe(name);
-      const isOpen  = openNotes.has(name);
+      const safe    = cssSafe(id);
+      const isOpen  = openNotes.has(id);
       const hasNote = note && note.trim().length > 0;
       const label   = hasNote ? (note.trim().length > 22 ? note.trim().slice(0,22)+'…' : note.trim()) : T[currentLang].note_add;
       return `
         <div class="order-group">
           <div class="order-row">
             <div class="order-row-name-wrap">
-              <div class="order-row-name">${escapeHtml(name)}</div>
-              <button type="button" class="note-toggle${hasNote?' has-note':''}" id="note-toggle-${safe}" onclick="toggleNote('${escapeJs(name)}')">
+              <div class="order-row-name">${escapeHtml(displayName)}</div>
+              <button type="button" class="note-toggle${hasNote?' has-note':''}" id="note-toggle-${safe}" onclick="toggleNote('${escapeJs(id)}')">
                 <svg class="pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
                 <span class="note-toggle-text">${escapeHtml(label)}</span>
               </button>
             </div>
             <div class="stepper">
-              <button class="stepper-btn" onclick="changeQty('${escapeJs(name)}',-1)">−</button>
+              <button class="stepper-btn" onclick="changeQty('${escapeJs(id)}',-1)">−</button>
               <span class="stepper-qty">${qty}</span>
-              <button class="stepper-btn" onclick="changeQty('${escapeJs(name)}',1)">+</button>
+              <button class="stepper-btn" onclick="changeQty('${escapeJs(id)}',1)">+</button>
             </div>
             <span class="order-row-price">${fmt(line)}</span>
           </div>
@@ -2560,14 +2441,14 @@
               <div class="note-panel-label">${escapeHtml(T[currentLang].note_edit)}</div>
               <textarea class="note-textarea" id="note-ta-${safe}" rows="2"
                 placeholder="${escapeHtml(T[currentLang].note_placeholder)}"
-                oninput="updateNote('${escapeJs(name)}',this.value);autoGrow(this);"
+                oninput="updateNote('${escapeJs(id)}',this.value);autoGrow(this);"
               >${escapeHtml(note||'')}</textarea>
             </div>
           </div>
         </div>`;
     }).join('');
 
-    amtEl.textContent = fmt(grandTotal) + ' UZS';
+    amtEl.textContent = fmt(grandTotal) + ' ' + CURRENCY;
     totalEl.style.display = 'block';
   }
 
@@ -2682,7 +2563,49 @@
   const dtEl = document.getElementById('receiptDateTime');
   if (dtEl) dtEl.textContent = now.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
 
-  updateCart();
+  /* ── STARTUP ──────────────────────────────
+     Order matters here: restore whatever was saved for this table
+     before the first render, so a refreshed/reopened tab comes back
+     exactly as the customer left it — same cart, same favourites,
+     same language — rather than a blank slate.
+
+     Table number and the restored-language UI are applied immediately
+     (synchronously) rather than after the menu-data fetch, since they
+     don't depend on it — no reason to make a customer on slow wifi see
+     the wrong table number for an extra second while menu-data.json
+     is still loading. */
+  (async function init() {
+    const saved = loadSession();
+    if (saved) {
+      Object.assign(cart, saved.cart || {});
+      (saved.favourites || []).forEach(id => favourites.add(id));
+      if (saved.lang && T[saved.lang]) currentLang = saved.lang;
+    }
+
+    /* reflect the restored language in the lang-switcher UI and in
+       every data-key element, the same way a manual setLang click would */
+    if (currentLang !== 'en') {
+      const btn = document.querySelector(`.lang-btn[onclick*="'${currentLang}'"]`);
+      if (btn) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const t = T[currentLang];
+        document.querySelectorAll('[data-key]').forEach(el => {
+          const key = el.getAttribute('data-key');
+          if (t[key] !== undefined) el.textContent = t[key];
+        });
+        document.getElementById('searchInput').placeholder = t.search_placeholder;
+      }
+    }
+
+    applyTableNumber();
+
+    await loadMenuData();
+    renderMenu(); // also calls applyFilters() internally
+    updateCart(); // safe now — MENU_ITEMS is populated, so a restored
+                  // cart shows correct names/prices on first paint
+                  // instead of flashing 0 UZS before the fetch resolves
+  })();
   </script>
 </body>
 </html>
