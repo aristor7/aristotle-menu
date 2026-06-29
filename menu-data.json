@@ -1,0 +1,294 @@
+{
+  "_readme": "EDIT THIS FILE TO CHANGE MENU CONTENT. Do not edit the .html file — that controls design and layout and should only be changed by your developer. Each item below needs: id (must stay unique, never reuse an old id for a different dish), category (one of: specials, mains, drinks, desserts), price (a plain number, no commas), image (a direct image URL), and name/desc in all 4 languages. weight and kcal are optional — leave kcal as null if you don't want to show it. badge is optional text like 'Today's Special' shown in EN only — leave as null for none. featured:true makes an item show as a large full-width card (use sparingly, looks best with 1-2 items).",
+
+  "currency": "UZS",
+
+  "items": [
+    {
+      "id": "tandoor-lamb-ribs",
+      "category": "specials",
+      "featured": true,
+      "price": 85000,
+      "weight": "600g",
+      "kcal": 520,
+      "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400",
+      "badge": "Today's Special",
+      "name": {
+        "en": "Tandoor Lamb Ribs",
+        "tr": "Tandır Kuzu Kaburga",
+        "ru": "Рёбра ягнёнка в тандыре",
+        "uz": "Tandir qo'zi qovurg'asi"
+      },
+      "desc": {
+        "en": "Slow-roasted over charcoal, sumac onions & flatbread.",
+        "tr": "Mangal ateşinde yavaş pişirilmiş, sumak soğanı ve taze ekmek ile.",
+        "ru": "Медленно запечённые на углях, с луком сумах и лепёшкой.",
+        "uz": "Ko'mirda sekin pishirilgan, sumak piyoz va yangi non bilan."
+      }
+    },
+    {
+      "id": "osh-palov",
+      "category": "specials",
+      "featured": true,
+      "price": 65000,
+      "weight": "800g",
+      "kcal": 680,
+      "image": "https://images.unsplash.com/photo-1574484284002-952d92456975?w=400",
+      "badge": "Most Ordered",
+      "name": {
+        "en": "Osh Palov",
+        "tr": "Öz Palov",
+        "ru": "Ош Плов",
+        "uz": "Osh palov"
+      },
+      "desc": {
+        "en": "Classic Uzbek plov — saffron rice, carrots & lamb. Feeds two.",
+        "tr": "Safran pilavı, havuç ve kuzu etiyle klasik Özbek plovı. İki kişilik.",
+        "ru": "Классический узбекский плов с рисом, морковью и бараниной. На двоих.",
+        "uz": "Zarg'aldoq guruch, sabzi va qo'zi go'shti bilan klassik o'zbek palovi. Ikki kishilik."
+      }
+    },
+    {
+      "id": "shashlik-plate",
+      "category": "mains",
+      "featured": false,
+      "price": 55000,
+      "weight": "350g",
+      "kcal": 440,
+      "image": "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=300",
+      "badge": null,
+      "name": {
+        "en": "Shashlik Plate",
+        "tr": "Şiş Tabağı",
+        "ru": "Шашлык",
+        "uz": "Shashlik"
+      },
+      "desc": {
+        "en": "Beef & chicken skewers, grilled peppers",
+        "tr": "Dana ve tavuk şiş, közlenmiş biber",
+        "ru": "Говядина и курица на шампурах, жареный перец",
+        "uz": "Mol va tovuq kabob, qovurilgan qalampir"
+      }
+    },
+    {
+      "id": "lagman-soup",
+      "category": "mains",
+      "featured": false,
+      "price": 38000,
+      "weight": "420g",
+      "kcal": 360,
+      "image": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=300",
+      "badge": null,
+      "name": {
+        "en": "Lagman Soup",
+        "tr": "Lagman Çorbası",
+        "ru": "Лагман",
+        "uz": "Lag'mon"
+      },
+      "desc": {
+        "en": "Hand-pulled noodles, lamb broth, herbs",
+        "tr": "El yapımı erişte, kuzu suyu, otlar",
+        "ru": "Тянутая лапша, бульон из баранины, зелень",
+        "uz": "Qo'lda tortilgan makaron, qo'zi sho'rvasi, ko'katlar"
+      }
+    },
+    {
+      "id": "samsa-x3",
+      "category": "mains",
+      "featured": false,
+      "price": 22000,
+      "weight": "270g",
+      "kcal": 390,
+      "image": "https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=300",
+      "badge": null,
+      "name": {
+        "en": "Samsa (×3)",
+        "tr": "Samsa (×3)",
+        "ru": "Самса (×3)",
+        "uz": "Samsa (×3)"
+      },
+      "desc": {
+        "en": "Baked pastry, spiced lamb & onion filling",
+        "tr": "Fırında börek, baharatlı kuzu ve soğan dolgusu",
+        "ru": "Печёная самса с бараниной и луком",
+        "uz": "Tandirda pishirilgan samsa, qo'zi va piyoz"
+      }
+    },
+    {
+      "id": "dimlama",
+      "category": "mains",
+      "featured": false,
+      "price": 48000,
+      "weight": "500g",
+      "kcal": 310,
+      "image": "https://images.unsplash.com/photo-1547592180-85f173990554?w=300",
+      "badge": null,
+      "name": {
+        "en": "Dimlama",
+        "tr": "Dimlama",
+        "ru": "Димлама",
+        "uz": "Dimlama"
+      },
+      "desc": {
+        "en": "Slow-braised vegetables & lamb, seasonal",
+        "tr": "Yavaş pişirilmiş sebze ve kuzu, mevsimlik",
+        "ru": "Тушёные овощи с бараниной, сезонное",
+        "uz": "Qo'zi bilan dim qilingan sabzavotlar, mavsumiy"
+      }
+    },
+    {
+      "id": "qora-choy",
+      "category": "drinks",
+      "featured": false,
+      "price": 8000,
+      "weight": "300ml",
+      "kcal": null,
+      "image": "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=300",
+      "badge": null,
+      "name": {
+        "en": "Qora Choy",
+        "tr": "Kara Çay",
+        "ru": "Чёрный чай",
+        "uz": "Qora choy"
+      },
+      "desc": {
+        "en": "Black tea, served with nishallo",
+        "tr": "Siyah çay, nişallo ile servis edilir",
+        "ru": "Чёрный чай, подаётся с нишалло",
+        "uz": "Qora choy, nishallo bilan"
+      }
+    },
+    {
+      "id": "kok-choy",
+      "category": "drinks",
+      "featured": false,
+      "price": 8000,
+      "weight": "300ml",
+      "kcal": null,
+      "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300",
+      "badge": null,
+      "name": {
+        "en": "Kok Choy",
+        "tr": "Yeşil Çay",
+        "ru": "Зелёный чай",
+        "uz": "Ko'k choy"
+      },
+      "desc": {
+        "en": "Green tea, Samarkand blend",
+        "tr": "Yeşil çay, Semerkant harmanı",
+        "ru": "Зелёный чай, самаркандский купаж",
+        "uz": "Ko'k choy, Samarqand aralashmasi"
+      }
+    },
+    {
+      "id": "ayran",
+      "category": "drinks",
+      "featured": false,
+      "price": 12000,
+      "weight": "250ml",
+      "kcal": null,
+      "image": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300",
+      "badge": null,
+      "name": {
+        "en": "Ayran",
+        "tr": "Ayran",
+        "ru": "Айран",
+        "uz": "Ayron"
+      },
+      "desc": {
+        "en": "Chilled salted yogurt drink, homemade",
+        "tr": "Soğuk tuzlu yoğurt içeceği, ev yapımı",
+        "ru": "Холодный солёный напиток из йогурта, домашний",
+        "uz": "Sovuq sho'r qatiq ichimlik, uy tayyori"
+      }
+    },
+    {
+      "id": "kompot",
+      "category": "drinks",
+      "featured": false,
+      "price": 10000,
+      "weight": "300ml",
+      "kcal": null,
+      "image": "https://images.unsplash.com/photo-1497534446932-c925b458314e?w=300",
+      "badge": null,
+      "name": {
+        "en": "Kompot",
+        "tr": "Komposto",
+        "ru": "Компот",
+        "uz": "Kompot"
+      },
+      "desc": {
+        "en": "Dried apricot & rose hip, chilled",
+        "tr": "Kuru kayısı ve kuşburnu, soğuk",
+        "ru": "Из кураги и шиповника, охлаждённый",
+        "uz": "Quritilgan o'rik va namatak, sovuq"
+      }
+    },
+    {
+      "id": "halva-bread",
+      "category": "desserts",
+      "featured": false,
+      "price": 15000,
+      "weight": "180g",
+      "kcal": 290,
+      "image": "https://images.unsplash.com/photo-1567206563114-c179706e0f04?w=300",
+      "badge": null,
+      "name": {
+        "en": "Halva & Bread",
+        "tr": "Helva & Ekmek",
+        "ru": "Халва с лепёшкой",
+        "uz": "Halva va non"
+      },
+      "desc": {
+        "en": "Sesame halva, fresh non flatbread",
+        "tr": "Susam helvası, taze non ekmeği",
+        "ru": "Кунжутная халва, свежий нон",
+        "uz": "Kungaboqar halvasi, yangi non"
+      }
+    },
+    {
+      "id": "chak-chak",
+      "category": "desserts",
+      "featured": false,
+      "price": 18000,
+      "weight": "200g",
+      "kcal": 480,
+      "image": "https://images.unsplash.com/photo-1562440499-64c9a111f713?w=300",
+      "badge": null,
+      "name": {
+        "en": "Chak-Chak",
+        "tr": "Çak-Çak",
+        "ru": "Чак-Чак",
+        "uz": "Chak-chak"
+      },
+      "desc": {
+        "en": "Fried dough with honey glaze",
+        "tr": "Ballı soslu kızarmış hamur",
+        "ru": "Жареное тесто с мёдом",
+        "uz": "Asal bilan qovurilgan xamir"
+      }
+    },
+    {
+      "id": "fruit-plate",
+      "category": "desserts",
+      "featured": false,
+      "price": 25000,
+      "weight": "350g",
+      "kcal": 140,
+      "image": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=300",
+      "badge": null,
+      "name": {
+        "en": "Fruit Plate",
+        "tr": "Meyve Tabağı",
+        "ru": "Фруктовая тарелка",
+        "uz": "Meva tarelkasi"
+      },
+      "desc": {
+        "en": "Seasonal melon, grapes, apricot",
+        "tr": "Mevsim kavunu, üzüm, kayısı",
+        "ru": "Сезонная дыня, виноград, абрикос",
+        "uz": "Mavsumiy qovun, uzum, o'rik"
+      }
+    }
+  ]
+}
